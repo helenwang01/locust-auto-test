@@ -1,0 +1,9 @@
+locust>=2.20
+protobuf>=4.25
+websocket-client>=1.7
+gevent>=24.2
+pyyaml>=6.0
+requests>=2.31
+tenacity>=8.2
+ujson>=5.9
+pytest>=8.0

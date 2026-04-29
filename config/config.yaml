@@ -1,0 +1,94 @@
+# 业务配置（非敏感）。敏感信息放 config/.env。
+# 所有代码统一走 active_env，避免调用点手工选环境导致不一致。
+active_env: qa
+
+rest:
+  friends_count: 100
+  user_prefix: yc
+  qa:
+    rest_url: http://a1-qa-hsb.easemob.com
+    org_name: easemob-demo
+    app_name: wang
+    users_path: /users
+    app_key: easemob-demo#wang
+  hsb:
+    rest_url: http://a1-hsb.easemob.com
+    org_name: easemob-demo
+    app_name: wang01
+    users_path: /users
+    app_key: easemob-demo#wang01
+    authorization: Bearer YWMt9uGfeD00EfGoHN24E7jgBwAAAAAAAAAAAAAAAAAAAAGDVBynSLtPEYP6_ASemFrUAQMAAAGdridodQBPGgB4daMASALTRF1cUlZTtw0en6dnGkpufxApYcLxPNgv8w
+  ebs:
+    rest_url: http://a1.easemob.com
+    org_name: easemob-demo
+    app_name: wang
+    users_path: /users
+    app_key: easemob-demo#wang
+  tke:
+#    rest_url: https://tke-sdb-fusion.easemob.com
+    rest_url: http://tke-sdb-a1.easemob.com
+    org_name: 100260423254379
+    app_name: wang
+    users_path: /users
+    app_key: 100260423254379#wang
+
+headers:
+  accept: application/json
+  content_type: application/json
+
+locust:
+  user_prefix: yc
+  user_count: 5000
+  user_start: 1
+  user_password: 1
+  user_batch: 50
+  user_timeout: 15
+  pad: 0
+  client_resource: locust
+  debug: false
+  console_log: true
+  message: hello
+  singlechat_total_users: 20
+  singlechat_spawn_rate: 1
+  singlechat_duration_s: 420
+  singlechat_message_interval_s: 1.0
+  singlechat_offline_at_s: 200
+  singlechat_offline_count: 10
+  singlechat_online1_at_s: 240
+  singlechat_online1_count: 7
+  singlechat_online2_at_s: 300
+  singlechat_online2_count: 3
+  speech_file_id: 125f9450-3ee6-11f1-b71d-09f78932ed3c
+  speech_username : tst
+
+  qa:
+    mode: tcp           # ws|wss|tcp|tcp+tls
+    host: msync-im-qa-hsb.easemob.com
+    port: 6717
+    path: /im           # ws/wss 时有效
+    tls_verify: false   # 目前客户端不启用校验证书
+    use_ssl: false
+
+  hsb:
+    mode: tcp           # ws|wss|tcp|tcp+tls
+    host: msync-im-hsb.easemob.com
+    port: 6717
+    path: /im           # ws/wss 时有效
+    tls_verify: false   # 目前客户端不启用校验证书
+    use_ssl: false
+
+  ebs:
+    mode: tcp           # ws|wss|tcp|tcp+tls
+    host: msync-im.easemob.com
+    port: 6717
+    path: /im           # ws/wss 时有效
+    tls_verify: false   # 目前客户端不启用校验证书
+    use_ssl: false
+
+  tke:
+    mode: tcp           # ws|wss|tcp|tcp+tls
+    host: tke-sdb-msync-im1.easemob.com
+    port: 6717
+    path: /im           # ws/wss 时有效
+    tls_verify: false   # 目前客户端不启用校验证书
+    use_ssl: false
