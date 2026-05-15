@@ -10,10 +10,12 @@
 ## 2. 规范目录
 - [docs/specs/README.md](./specs/README.md)
   - 说明规范文件的职责边界与维护方式。
+- [docs/specs/doc-governance.md](./specs/doc-governance.md)
+  - 文档治理清单（新增、合并、删除、评审检查项）。
 
 ## 3. 角色规范（执行视角）
 - [agents/README.md](../agents/README.md)
-  - Coder / Reviewer / Tester 的职责与最小检查项。
+  - 总 Agent 执行入口（任务分流、skill 触发、协作顺序）。
 
 ## 4. 技能清单（操作视角）
 - [skills/README.md](../skills/README.md)

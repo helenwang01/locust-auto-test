@@ -1,6 +1,6 @@
 # Core Spec（唯一规范）
 
-版本：v2.0  日期：2026-04-22
+版本：v2.1  日期：2026-04-29
 
 ## 1. 目标
 - 统一 REST 与 Locust 压测的配置来源、执行方式和可观测标准。
@@ -15,14 +15,23 @@
 ### 2.2 读取方式
 - 统一通过 `utils/config.py` 的 `load_yaml_config()` 读取。
 - 读取顺序：`config.yaml` -> `.env` 覆盖同路径键。
-- 禁止在业务代码中手工拼读取逻辑。
 
 ### 2.3 环境选择
 - 顶层 `active_env` 为唯一环境开关。
-- `rest` 与 `locust` 必须按环境分组（如 `qa/hsb/ebs`）。
+- `rest` 必须按环境分组（如 `qa/hsb/ebs`）。
+- `locust` 的连接参数必须按环境分组（`locust.<active_env>`）。
+- 造数据与通用变量必须放在非环境分组段，不随 `active_env` 变化。
 - 不再支持平铺单环境结构。
 
-### 2.4 默认值策略
+### 2.4 分组模型（按场景）
+- 配置应按场景组织，至少包含：
+  - `rest`：REST 相关配置（按环境分组）
+  - `locust`：Locust 压测配置（公共参数平铺 + 环境连接参数）
+  - `data_seed`（或等价命名）：造数据与公共变量（不分环境）
+- 字段必须精简，不保留同义冗余键。
+- 每个字段必须附注释，明确用途与单位（如 `_s` 表示秒）。
+
+### 2.5 默认值策略
 - 关键压测参数缺失必须直接报错。
 - 不允许“静默默认值”掩盖配置问题。
 
@@ -33,7 +42,8 @@
 
 ### 3.2 作用
 - REST 压测读取 `rest.<active_env>` + `locust` 公共字段。
-- 长连接压测读取 `locust.<active_env>` 连接字段 + `locust` 公共字段。
+- 长连接压测读取 `locust.<active_env>` 连接字段 + `locust` 平铺公共字段。
+- 长连接压测涉及造数据/取 token 的 REST 调用，也必须由公共配置中心统一提供 `rest runtime`（如 `token_url`、headers、org/app）。
 - 向上层脚本提供结构化配置对象。
 
 ### 3.3 约束
@@ -51,7 +61,8 @@
 - 入口脚本：`locustfile_singlechat_online.py`
 - 连接脚本：`loadtests/longconn/locustfile_singlechat_online.py`
 - 连接参数必须来自 `locust.<active_env>`。
-- 其它行为参数来自 `locust` 公共字段。
+- 其它行为参数来自 `locust` 场景字段（以配置中心定义为准）。
+- 长连接场景中的 REST 依赖配置（token、造数据）必须来自统一配置中心，不允许脚本内自行拼接。
 
 ### 4.3 指标要求
 - 至少包含：`send_to_ack`、`end_to_end`、`send_error`、`online_users`（如场景需要）。

@@ -1,94 +1,121 @@
-# 业务配置（非敏感）。敏感信息放 config/.env。
-# 所有代码统一走 active_env，避免调用点手工选环境导致不一致。
-active_env: qa
-
-rest:
-  friends_count: 100
-  user_prefix: yc
-  qa:
-    rest_url: http://a1-qa-hsb.easemob.com
-    org_name: easemob-demo
-    app_name: wang
-    users_path: /users
-    app_key: easemob-demo#wang
-  hsb:
-    rest_url: http://a1-hsb.easemob.com
-    org_name: easemob-demo
-    app_name: wang01
-    users_path: /users
-    app_key: easemob-demo#wang01
-    authorization: Bearer YWMt9uGfeD00EfGoHN24E7jgBwAAAAAAAAAAAAAAAAAAAAGDVBynSLtPEYP6_ASemFrUAQMAAAGdridodQBPGgB4daMASALTRF1cUlZTtw0en6dnGkpufxApYcLxPNgv8w
-  ebs:
-    rest_url: http://a1.easemob.com
-    org_name: easemob-demo
-    app_name: wang
-    users_path: /users
-    app_key: easemob-demo#wang
-  tke:
-#    rest_url: https://tke-sdb-fusion.easemob.com
-    rest_url: http://tke-sdb-a1.easemob.com
-    org_name: 100260423254379
-    app_name: wang
-    users_path: /users
-    app_key: 100260423254379#wang
+active_env: qa  # 当前激活环境名，对应下方 rest.<name> 与 locust.<name> 块
 
 headers:
-  accept: application/json
-  content_type: application/json
+  accept: application/json  # 通用 Accept 请求头
+  content_type: application/json  # 通用 Content-Type（多为 JSON）
+
+data_seed:
+  user_prefix: yc  # 用户名前缀，造号与压测身份生成
+  user_password: "1"  # 用户登录密码
+  user_pad: 0  # 用户编号补零位数，0 表示不补零
+  user_timeout_s: 15  # REST 调用超时（秒）
+  create_users_start: 1  # 批量创建用户起始编号（含）
+  create_users_end: 6000  # 批量创建用户结束编号（含）
+  create_users_batch: 50  # 每批创建用户数（通常 1..50）
+  friends_count: 210  # 导入好友数量
+  friends_owner: yc1  # 好友导入时的 owner 用户名
+  metadata_org: easemob-demo  # metadata 接口请求头：组织
+  metadata_app: wang01  # metadata 接口请求头：应用
+  metadata_role: admin-user  # metadata 接口请求头：角色
+  room_id: room_1  # 聊天室 ID 种子（生成 room_1..room_N 等）
+
+rest:
+  qa:
+    rest_url: http://a1-qa-hsb.easemob.com  # QA REST 网关地址
+    org_name: easemob-demo  # 租户组织名
+    app_name: wang01  # 应用名
+    users_path: /users  # 用户相关 REST 路径前缀
+    app_key: easemob-demo#wang01  # 应用密钥（token 等）
+  hsb:
+    rest_url: http://a1-hsb.easemob.com  # HSB REST 网关地址
+    org_name: easemob-demo  # 租户组织名
+    app_name: wang01  # 应用名
+    users_path: /users  # 用户相关 REST 路径前缀
+    app_key: easemob-demo#wang01  # 应用密钥
+  ebs:
+    rest_url: http://a1.easemob.com  # EBS REST 网关地址
+    org_name: easemob-demo  # 租户组织名
+    app_name: wang  # 应用名
+    users_path: /users  # 用户相关 REST 路径前缀
+    app_key: easemob-demo#wang  # 应用密钥
+  tke:
+    rest_url: http://tke-sdb-a1.easemob.com  # TKE REST 网关地址
+    org_name: 100260423254379  # 租户组织名（数字 org）
+    app_name: wang  # 应用名
+    users_path: /users  # 用户相关 REST 路径前缀
+    app_key: 100260423254379#wang  # 应用密钥
 
 locust:
-  user_prefix: yc
-  user_count: 5000
-  user_start: 1
-  user_password: 1
-  user_batch: 50
-  user_timeout: 15
-  pad: 0
-  client_resource: locust
-  debug: false
-  console_log: true
-  message: hello
-  singlechat_total_users: 20
-  singlechat_spawn_rate: 1
-  singlechat_duration_s: 420
-  singlechat_message_interval_s: 1.0
-  singlechat_offline_at_s: 200
-  singlechat_offline_count: 10
-  singlechat_online1_at_s: 240
-  singlechat_online1_count: 7
-  singlechat_online2_at_s: 300
-  singlechat_online2_count: 3
-  speech_file_id: 125f9450-3ee6-11f1-b71d-09f78932ed3c
-  speech_username : tst
+  scenes:
+    - name: jingqi-chatroom  # 场景标识（chatroom_scene / 分层模型用）
+      room_count: 20  # 直播间（聊天室）数量
+      room_tiers:
+        hot:
+          room_ratio: 0.2  # 热门档房间占全部房间的比例
+          user_target_min: 80000  # 热门档单房在线下限（目标区间）
+          user_target_max: 100000  # 热门档单房在线上限（目标区间）
+        mid:
+          room_ratio: 0.5  # 中腰部房间占全部房间的比例
+          user_target: 50000  # 中腰部单房在线目标人数
+        tail:
+          room_ratio: 0.3  # 长尾房间占全部房间的比例
+          user_target: 20000  # 长尾单房在线目标人数
+      surge_window_s: 300  # 瞬时涌入窗口时长（秒）
+      surge_curve: s_curve  # 涌入曲线：linear | s_curve | front_loaded
+      peak_target_users: 1200000  # 峰值在线总目标（全房间汇总）
+
+    - name: chatroom-online-small  # 默认聊天室摸高压测场景（可被 LOCUST_CHATROOM_SCENE 覆盖）
+      room_count: 1  # 聊天室数量默认值（可被 --room-count 覆盖）
+      users_per_room: 50  # 每房在线人数默认值（可被 --users-per-room 覆盖）
+      sender_per_room: 1  # 每房发送者人数默认值（可被 --sender-per-room 覆盖）
+      room_msg_rps: 10  # 每房发送速率默认值（条/秒，可被 --room-msg-rps 覆盖）
+#      send_batch_duration_s: 1  # 每批连续发送时长（秒）
+#      send_pause_interval_s: 60  # 每批发送后静默时长（秒）
+      message: hello
+     # message: {"msgId":"a8f7c2d1-9b2e-4f2d-8a77-123456789001","from":"user_10001","to":"room_90001","type":"chat","timestamp":1715678901234,"platform":"ios","device":"iPhone15,3","appVersion":"5.2.1","content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.","ext":{"traceId":"trace-987654321","sessionId":"session-123456789","messageType":"text","lang":"en","network":"wifi","region":"ap-northeast-1","tags":["pressure-test","im","websocket","long-connection","benchmark"],"clientInfo":{"sdk":"custom-im-sdk","sdkVersion":"3.1.9","os":"iOS 18.0","carrier":"softbank"}}}
+#      message: { verison : MSYNC_V1, compress_algorimth : 1, command : SYNC, payload : { status : { error_code : 0 }, metas : [ { id : 1504136624231954160, from : admin, to : miggo_10048, timestamp : 1767773898374, ns : CHAT, payload : { chattype : CHATROOM, from : admin, to : miggo_10048, contents : [ { contenttype : CUSTOM, event : SEND_GIFT, customexts : [ { key : gameBurstCrystalSchedules, type : 7, value : [] } ] } ], msg_config : { }, meta : {} }, exts : [ { key : is_rest, type : 1, value : 1 }, { key : msg_type, type : 7, value : custom }, { key : write_channel, type : 1, value : 1 }, { key : chat_type, type : 7, value : chat:room }, { key : route_type, type : 7, value : route_normal }, { key : chat_route, type : 7, value : route_normal:chat:room:custom } ] }, { id : 1504136624437462492, from : miggo_20016359326********/********910af8f8-5b9e-4d10-af08-6c1ad5f881e1, to : miggo_10048, timestamp : 1767773898421, ns : CHAT, payload : { chattype : CHATROOM, from : miggo_2001635932659589121, to : miggo_10048, contents : [ { contenttype : CUSTOM, event : ROOM_CHAT, customexts : [ { key : data, type : 7, value : {"type":"ROOM_CHAT","data":"{\"type\":\"GIFT\",\"badgeUrls\":[\"https://miggo.oss-ap-southeast-1.aliyuncs.com/other/manager-15f1274c-672c-4981-92ad-ea7da88d1086.png\"],\"vipInfo\":{\"type\":\"MARQUIS\",\"badgeUrl\":\"https://miggo.oss-ap-southeast-1.aliyuncs.com/svga_cover/manager-a48640ae-9dcf-45a3-88b0-12b850ccd8c7.png\"},\"userProfile\":{\"id\":\"2001635932659589121\",\"account\":\"10048\",\"userAvatar\":\"https://dev-yuyin.oss-ap-southeast-1.aliyuncs.com/avatar/c311e981-2080-4ff9-bdf5-110329924ba1.jpg\",\"userNickname\":\"box1\",\"userSex\":1,\"age\":29,\"freezingTime\":1766004570000,\"countryId\":\"1231833304232112130\",\"countryName\":\"India\",\"countryCode\":\"IN\",\"regionCode\":\"OTHER\",\"originSys\":\"MIGGO\",\"sysOriginChild\":\"MIGGO\",\"del\":false,\"createTime\":1766090970000,\"bornYear\":1996,\"bornMonth\":1,\"bornDay\":1,\"useProps\":[{\"userId\":\"2001635932659589121\",\"propsResources\":{\"id\":\"2005473358830690306\",\"type\":\"NOBLE_VIP\",\"code\":\"VIP3\",\"name\":\"MARQUIS\",\"cover\":\"https://miggo.oss-ap-southeast-1.aliyuncs.com/svga_cover/manager-a48640ae-9dcf-45a3-88b0-12b850ccd8c7.png\",\"sourceUrl\":\"https://miggo.oss-ap-southeast-1.aliyuncs.com/svgasource/manager-c1e11c97-074d-4e28-8b76-4914d4aa9efa.svga\",\"expand\":\"\",\"amount\":30000.0},\"expireTime\":1769582552000,\"allowGive\":null}],\"wearBadge\":[{\"id\":\"1565533277562978305\",\"badgeLevel\":5,\"milestone\":\"0\",\"badgeName\":\"SVIP5\",\"type\":\"ACTIVITY\",\"badgeKey\":\"svip5_badge\",\"selectUrl\":\"https://miggo.oss-ap-southeast-1.aliyuncs.com/other/manager-15f1274c-672c-4981-92ad-ea7da88d1086.png\",\"notSelectUrl\":\"\",\"animationUrl\":\"https://miggo.oss-ap-southeast-1.aliyuncs.com/other/manager-7f5f13b8-0830-4c19-b4f9-3ffcf05eb69b.svga\"}],\"ownSpecialId\":null,\"userLevel\":null,\"inRoomId\":null,\"roomIcon\":null,\"accountStatus\":\"NORMAL\",\"sameRegion\":true,\"isUpdateCountry\":\"1\"},\"chatBubble\":\"\",\"giftMsg\":{\"sender\":{\"id\":\"2001635932659589121\",\"userName\":\"box1\",\"userPic\":\"https://dev-yuyin.oss-ap-southeast-1.aliyuncs.com/avatar/c311e981-2080-4ff9-bdf5-110329924ba1.jpg\"},\"sendGiftAllType\":\"ON_MIC\",\"giftList\":[{\"giftId\":\"2006262610737274881\",\"giftPic\":\"https://miggo.oss-ap-southeast-1.aliyuncs.com/gifts/manager-83303ab8-9d49-498b-80b7-9a73c91d7994.png\",\"giftSourceUrl\":\"\",\"special\":\"\",\"currencyType\":\"\",\"giftTab\":\"LUCKY_GIFT\",\"giftCount\":1,\"giftPrice\":10,\"rewardMultiple\":1}],\"receiverList\":[{\"receiverId\":\"2001635932659589121\",\"receiverName\":\"box1\",\"receiverAvatar\":\"https://dev-yuyin.oss-ap-southeast-1.aliyuncs.com/avatar/c311e981-2080-4ff9-bdf5-110329924ba1.jpg\",\"jumpCombo\":8,\"giftIds\":[\"2006262610737274881\"]}],\"sendGiftTime\":1767773894989,\"target\":1},\"svipLevel\":\"SVIP_5\"}"} } ] } ], meta : {} }, exts : [ { key : msg_type, type : 7, value : custom }, { key : write_channel, type : 1, value : 1 }, { key : chat_type, type : 7, value : chat:room }, { key : route_type, type : 7, value : route_normal }, { key : chat_route, type : 7, value : route_normal:chat:room:custom }, { key : client_id, type : 4, value : 176777389499026191 } ] } ], queue : miggo_10048@conference.easemob.com, is_last : true } }  # 自定义消息正文（载荷 body）
+
+  client_resource: locust  # 长连接登录 resource / client 标识
+  debug: false  # 是否开启调试日志（依脚本实现）
+  console_log: true  # 是否在控制台输出连接等业务日志
+
+  message: hello  # 单聊等场景默认消息正文（聊天室场景可单独覆盖）
+  singlechat_message_interval_s: 1.0  # 单聊发消息间隔（秒）；并发用户数用 locust -u，时长用 locust -t
+  singlechat_offline_at_s: 200  # 首批下线触发时刻（自启动起的秒）
+  singlechat_offline_count: 10  # 首批下线用户数
+  singlechat_online1_at_s: 240  # 第一次重回上线触发时刻（秒）
+  singlechat_online1_count: 7  # 第一次重回上线用户数
+  singlechat_online2_at_s: 300  # 第二次重回上线触发时刻（秒）
+  singlechat_online2_count: 3  # 第二次重回上线用户数
+
+  speech_username: tst  # 语音 HTTP 压测用户名
+  speech_file_id: 125f9450-3ee6-11f1-b71d-09f78932ed3c  # 语音文件 ID
+  speech_target_qps:  # 语音接口目标 QPS，空表示不限速/未启用
 
   qa:
-    mode: tcp           # ws|wss|tcp|tcp+tls
-    host: msync-im-qa-hsb.easemob.com
-    port: 6717
-    path: /im           # ws/wss 时有效
-    tls_verify: false   # 目前客户端不启用校验证书
-    use_ssl: false
+    mode: tcp  # 长连接传输：tcp | websocket
+    host: msync-im-qa-hsb.easemob.com  # MSync 接入域名或 IP
+    port: 6717  # MSync 端口
+    path: /websocket  # websocket 模式下的路径；tcp 时部分脚本可忽略
+    use_ssl: false  # 是否 TLS（false 为明文）
 
   hsb:
-    mode: tcp           # ws|wss|tcp|tcp+tls
-    host: msync-im-hsb.easemob.com
-    port: 6717
-    path: /im           # ws/wss 时有效
-    tls_verify: false   # 目前客户端不启用校验证书
-    use_ssl: false
+    mode: tcp  # 长连接传输：tcp | websocket
+    host: msync-im-hsb.easemob.com  # MSync 接入域名或 IP
+    port: 6717  # MSync 端口
+    path: /im  # websocket 模式下的路径
+    use_ssl: false  # 是否 TLS
 
   ebs:
-    mode: tcp           # ws|wss|tcp|tcp+tls
-    host: msync-im.easemob.com
-    port: 6717
-    path: /im           # ws/wss 时有效
-    tls_verify: false   # 目前客户端不启用校验证书
-    use_ssl: false
+    mode: tcp  # 长连接传输：tcp | websocket
+    host: msync-im.easemob.com  # MSync 接入域名或 IP
+    port: 6717  # MSync 端口
+    path: /im  # websocket 模式下的路径
+    use_ssl: false  # 是否 TLS
 
   tke:
-    mode: tcp           # ws|wss|tcp|tcp+tls
-    host: tke-sdb-msync-im1.easemob.com
-    port: 6717
-    path: /im           # ws/wss 时有效
-    tls_verify: false   # 目前客户端不启用校验证书
-    use_ssl: false
+    mode: tcp  # 长连接传输：tcp | websocket
+    host: tke-sdb-msync-im1.easemob.com  # MSync 接入域名或 IP
+    port: 6717  # MSync 端口
+    path: /im  # websocket 模式下的路径
+    use_ssl: false  # 是否 TLS

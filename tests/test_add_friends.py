@@ -1,46 +1,25 @@
 from __future__ import annotations
 """
 Pytest: import friends via REST (real HTTP).
-- Reads rest.* from config/.env
+- Reads rest.* + data_seed.*
 - Imports usernames in batches (fixed max 10 each request)
 
 Run:
   pytest -q -s -m add_friends tests/test_add_friends.py
 """
 
-from typing import Any, Dict, Iterable, List
+from typing import Any, Iterable, List
 import pytest
 import requests
-from utils.config import load_yaml_config
 
 
-def _pick(d: Dict[str, Any], keys: Iterable[str], default):
-    for k in keys:
-        if k in d and d[k] not in (None, ""):
-            return d[k]
-    return default
-
-
-def _headers_from_cfg(cfg: Dict[str, Any], token: str) -> Dict[str, str]:
-    headers_cfg = cfg.get("headers", {}) if isinstance(cfg, dict) else {}
-    accept = headers_cfg.get("accept", headers_cfg.get("Accept", None))
-    content_type = headers_cfg.get("content_type", headers_cfg.get("content-type", None))
-    h: Dict[str, str] = {"Authorization": token}
-    if accept is not None:
-        h["Accept"] = str(accept)
-    if content_type is not None:
-        h["Content-Type"] = str(content_type)
-    return h
-
-
-def _metadata_headers(rest_sec: Dict[str, Any], token: str) -> Dict[str, str]:
-    # 按接口示例使用 metadata 专用请求头
+def _metadata_headers(*, token: str, metadata_org: str, metadata_app: str, metadata_role: str):
     return {
         "Authorization": token,
         "Content-Type": "application/x-www-form-urlencoded",
-        "Easemob-Org": str(rest_sec.get("metadata_org", "easemob-demo")),
-        "Easemob-App": str(rest_sec.get("metadata_app", rest_sec.get("app_name", ""))),
-        "Easemob-Role": str(rest_sec.get("metadata_role", "admin-user")),
+        "Easemob-Org": metadata_org,
+        "Easemob-App": metadata_app,
+        "Easemob-Role": metadata_role,
     }
 
 
@@ -50,40 +29,21 @@ def _chunk(lst: List[str], size: int) -> Iterable[List[str]]:
 
 
 @pytest.mark.add_friends
-def test_add_friends_import():
-    # 读取合并配置（config/config.yaml + config/.env），.env 覆盖敏感字段
-    cfg = load_yaml_config()
-    rest_sec: Dict[str, Any] = cfg.get("rest", {}) if isinstance(cfg, dict) else {}
-    loc: Dict[str, Any] = cfg.get("locust", {}) if isinstance(cfg, dict) else {}
+def test_add_friends_import(data_seed_config, rest_client):
+    users_path = rest_client.users_path
 
-    missing = [
-        k
-        for k in ("rest_url", "org_name", "app_name", "authorization", "friends_count", "user_prefix")
-        if not rest_sec.get(k)
-    ]
-    if missing:
-        pytest.fail("config/.env 缺失字段: " + ", ".join(f"rest.{k}" for k in missing))
-
-    rest_url = str(rest_sec["rest_url"]).rstrip("/")
-    org_name = str(rest_sec["org_name"]).strip("/")
-    app_name = str(rest_sec["app_name"]).strip("/")
-    users_path = str(rest_sec.get("users_path", "/users"))
-    token = str(rest_sec["authorization"])  # already includes scheme, e.g., Bearer
-
-    prefix = str(rest_sec["user_prefix"])
-    count = int(rest_sec["friends_count"])
-    owner = str(rest_sec.get("friends_owner", "tst00"))
-    timeout = float(_pick(loc, ["user_timeout", "timeout"], 15))
+    prefix = data_seed_config.user_prefix
+    count = data_seed_config.friends_count
+    owner = data_seed_config.friends_owner
+    timeout = data_seed_config.user_timeout_s
     batch_size = 10
 
     if count <= 0:
-        pytest.fail(f"配置错误：rest.friends_count 必须 > 0，当前 {count}")
+        pytest.fail(f"配置错误：data_seed.friends_count 必须 > 0，当前 {count}")
     if not prefix:
-        pytest.fail("配置错误：rest.user_prefix 不能为空")
+        pytest.fail("配置错误：data_seed.user_prefix 不能为空")
 
-    base = f"{rest_url}/{org_name}/{app_name}"
-    import_url = f"{base}{users_path}/{owner}/contacts/import?isSendNotice=false"
-    headers = _headers_from_cfg(cfg, token)
+    import_url = f"{users_path}/{owner}/contacts/import"
 
     usernames = [f"{prefix}{i}" for i in range(1, count + 1)]
     total_batches = (count + batch_size - 1) // batch_size
@@ -97,11 +57,11 @@ def test_add_friends_import():
         payload = {"usernames": group}
         print(f"[import-friends] batch {idx}/{total_batches}, size={len(group)}")
         try:
-            resp = requests.post(import_url, headers=headers, json=payload, timeout=timeout)
+            resp = rest_client.post(import_url, params={"isSendNotice": "false"}, json=payload, timeout=timeout)
         except requests.RequestException as e:
             pytest.fail(
                 f"Request error (batch={idx}/{total_batches}, size={len(group)}, "
-                f"sample={group[:3]}, url={import_url}): {e}"
+                f"sample={group[:3]}, url={rest_client.build_url(import_url)}): {e}"
             )
 
         ok = 200 <= resp.status_code < 300
@@ -141,46 +101,37 @@ def test_add_friends_import():
 
 
 @pytest.mark.add_friends
-def test_set_user_metadata_batch():
-    # 读取合并配置（config/config.yaml + config/.env），.env 覆盖敏感字段
-    cfg = load_yaml_config()
-    rest_sec: Dict[str, Any] = cfg.get("rest", {}) if isinstance(cfg, dict) else {}
-    loc: Dict[str, Any] = cfg.get("locust", {}) if isinstance(cfg, dict) else {}
-
-    missing = [k for k in ("rest_url", "org_name", "app_name", "authorization", "friends_count", "user_prefix") if not rest_sec.get(k)]
-    if missing:
-        pytest.fail("config/.env 缺失字段: " + ", ".join(f"rest.{k}" for k in missing))
-
-    rest_url = str(rest_sec["rest_url"]).rstrip("/")
-    org_name = str(rest_sec["org_name"]).strip("/")
-    app_name = str(rest_sec["app_name"]).strip("/")
-    token = str(rest_sec["authorization"])
-    prefix = str(rest_sec["user_prefix"])
-    count = int(rest_sec["friends_count"])
-    timeout = float(_pick(loc, ["user_timeout", "timeout"], 15))
+def test_set_user_metadata_batch(data_seed_config, rest_client):
+    prefix = data_seed_config.user_prefix
+    count = data_seed_config.friends_count
+    timeout = data_seed_config.user_timeout_s
 
     if count <= 0:
-        pytest.fail(f"配置错误：rest.friends_count 必须 > 0，当前 {count}")
+        pytest.fail(f"配置错误：data_seed.friends_count 必须 > 0，当前 {count}")
     if not prefix:
-        pytest.fail("配置错误：rest.user_prefix 不能为空")
+        pytest.fail("配置错误：data_seed.user_prefix 不能为空")
 
-    base = f"{rest_url}/{org_name}/{app_name}"
-    headers = _metadata_headers(rest_sec, token)
+    headers = _metadata_headers(
+        token=rest_client.authorization,
+        metadata_org=data_seed_config.metadata_org,
+        metadata_app=data_seed_config.metadata_app or rest_client.app_name,
+        metadata_role=data_seed_config.metadata_role,
+    )
 
     print(f"[set-metadata] range={prefix}1..{prefix}{count}, count={count}")
     done = 0
     for i in range(1, count + 1):
         username = f"{prefix}{i}"
-        url = f"{base}/metadata/user/{username}?notify=false"
+        url = f"/metadata/user/{username}"
         form_data = {
             "aaa": f"111_{i}",
             "age": f"222_{i}",
             "ext": f"扩展信息_{i}",
         }
         try:
-            resp = requests.put(url, headers=headers, data=form_data, timeout=timeout)
+            resp = rest_client.put(url, params={"notify": "false"}, headers=headers, data=form_data, timeout=timeout)
         except requests.RequestException as e:
-            pytest.fail(f"Request error for user={username}, url={url}: {e}")
+            pytest.fail(f"Request error for user={username}, url={rest_client.build_url(url)}: {e}")
 
         ok = 200 <= resp.status_code < 300
         body: Any = None
@@ -209,33 +160,18 @@ def test_set_user_metadata_batch():
 
 
 @pytest.mark.add_friends
-def test_set_friend_remark_batch():
-    # 读取合并配置（config/config.yaml + config/.env），.env 覆盖敏感字段
-    cfg = load_yaml_config()
-    rest_sec: Dict[str, Any] = cfg.get("rest", {}) if isinstance(cfg, dict) else {}
-    loc: Dict[str, Any] = cfg.get("locust", {}) if isinstance(cfg, dict) else {}
-
-    missing = [k for k in ("rest_url", "org_name", "app_name", "authorization", "friends_count", "user_prefix") if not rest_sec.get(k)]
-    if missing:
-        pytest.fail("config/.env 缺失字段: " + ", ".join(f"rest.{k}" for k in missing))
-
-    rest_url = str(rest_sec["rest_url"]).rstrip("/")
-    org_name = str(rest_sec["org_name"]).strip("/")
-    app_name = str(rest_sec["app_name"]).strip("/")
-    token = str(rest_sec["authorization"])
-    prefix = str(rest_sec["user_prefix"])
-    count = int(rest_sec["friends_count"])
-    owner = str(rest_sec.get("friends_owner", "tst"))
-    timeout = float(_pick(loc, ["user_timeout", "timeout"], 15))
+def test_set_friend_remark_batch(data_seed_config, rest_client):
+    prefix = data_seed_config.user_prefix
+    count = data_seed_config.friends_count
+    owner = data_seed_config.friends_owner
+    timeout = data_seed_config.user_timeout_s
 
     if count <= 0:
-        pytest.fail(f"配置错误：rest.friends_count 必须 > 0，当前 {count}")
+        pytest.fail(f"配置错误：data_seed.friends_count 必须 > 0，当前 {count}")
     if not prefix:
-        pytest.fail("配置错误：rest.user_prefix 不能为空")
+        pytest.fail("配置错误：data_seed.user_prefix 不能为空")
 
-    base = f"{rest_url}/{org_name}/{app_name}"
     headers = {
-        "Authorization": token,
         "Content-Type": "application/json",
         "Accept": "application/json",
     }
@@ -244,12 +180,12 @@ def test_set_friend_remark_batch():
     done = 0
     for i in range(1, count + 1):
         friend = f"{prefix}{i}"
-        url = f"{base}/user/{owner}/contacts/users/{friend}"
+        url = f"/user/{owner}/contacts/users/{friend}"
         payload = {"remark": f"测试{i}"}
         try:
-            resp = requests.put(url, headers=headers, json=payload, timeout=timeout)
+            resp = rest_client.put(url, headers=headers, json=payload, timeout=timeout)
         except requests.RequestException as e:
-            pytest.fail(f"Request error for owner={owner}, friend={friend}, url={url}: {e}")
+            pytest.fail(f"Request error for owner={owner}, friend={friend}, url={rest_client.build_url(url)}: {e}")
 
         ok = 200 <= resp.status_code < 300
         body: Any = None

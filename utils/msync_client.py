@@ -10,7 +10,7 @@ from pathlib import Path
 
 # NOTE: pb imports: try relative (package mode) then top-level (script mode)
 try:  # package-style
-    from ...pb import jid_pb2, messagebody_pb2, msync_pb2  # type: ignore
+    from ...pb import jid_pb2, keyvalue_pb2, messagebody_pb2, msync_pb2, mucbody_pb2  # type: ignore
 except Exception:
     try:  # repo-root script-style (ensure src/ on path)
         import sys
@@ -19,7 +19,7 @@ except Exception:
             sp = str(p)
             if sp not in sys.path:
                 sys.path.insert(0, sp)
-        from pb import jid_pb2, messagebody_pb2, msync_pb2  # type: ignore
+        from pb import jid_pb2, keyvalue_pb2, messagebody_pb2, msync_pb2, mucbody_pb2  # type: ignore
     except Exception as _e:
         raise
 
@@ -70,11 +70,16 @@ class MsyncClient:
 
         # pending send tracking: meta_id -> t_send_ms
         self._pending: Dict[int, float] = {}
+        self._chatroom_jid_cache: Dict[str, jid_pb2.JID] = {}
+        self._chat_from_jid_cache: Optional[jid_pb2.JID] = None
 
         # last login diagnostics
         self.last_login_error_code: Optional[int] = None
         self.last_login_error_name: Optional[str] = None
         self.last_login_reason: Optional[str] = None
+        self.last_muc_error_code: Optional[int] = None
+        self.last_muc_error_name: Optional[str] = None
+        self.last_muc_reason: Optional[str] = None
 
         # logger
         self.logger = logging.getLogger(f"MsyncClient_{id(self)}")
@@ -86,8 +91,15 @@ class MsyncClient:
     def connect(self, ip: Optional[str] = None, port: Optional[int] = None,
                 transport: Optional[str] = None, use_ssl: Optional[bool] = None,
                 timeout: float = 30.0):
-        self.transport_type = (transport or "tcp").lower()
-        use_ssl = bool(use_ssl if use_ssl is not None else getattr(self.options, "using_https", False))
+        transport_raw = (transport or "tcp").lower()
+        use_ssl_flag = bool(use_ssl if use_ssl is not None else getattr(self.options, "using_https", False))
+        # Strict config contract: transport only accepts tcp/websocket.
+        if transport_raw == "websocket":
+            self.transport_type = "websocket"
+        elif transport_raw == "tcp":
+            self.transport_type = "tcp"
+        else:
+            raise ValueError(f"unsupported transport: {transport_raw}; expected tcp|websocket")
 
         if self.transport_type == "tcp":
             host = ip or getattr(self.options, "im_server", None)
@@ -95,7 +107,7 @@ class MsyncClient:
             if not host or not prt:
                 raise ValueError("tcp requires ip and port (or options.im_server/im_port)")
             s = socket.create_connection((host, prt), timeout=timeout)
-            if use_ssl:
+            if use_ssl_flag:
                 ctx = ssl.create_default_context()
                 ctx.check_hostname = False
                 ctx.verify_mode = ssl.CERT_NONE
@@ -103,7 +115,7 @@ class MsyncClient:
             s.settimeout(timeout)
             self.socket = s
             self.is_connected = True
-            self.logger.debug(f"TCP connected {host}:{prt} ssl={use_ssl}")
+            self.logger.debug(f"TCP connected {host}:{prt} ssl={use_ssl_flag}")
         elif self.transport_type == "websocket":
             if not HAS_WEBSOCKET:
                 raise ImportError("websocket-client is required for websocket transport")
@@ -112,16 +124,14 @@ class MsyncClient:
             path = getattr(self.options, "websocket_path", None) or "/websocket"
             if not host or not prt:
                 raise ValueError("websocket requires ip and port (or options.websocket_server/websocket_port)")
-            scheme = "wss" if use_ssl else "ws"
+            scheme = "wss" if use_ssl_flag else "ws"
             if not path.startswith("/"):
                 path = "/" + path
             url = f"{scheme}://{host}:{prt}{path}"
-            sslopt = {"cert_reqs": ssl.CERT_NONE} if use_ssl else None
+            sslopt = {"cert_reqs": ssl.CERT_NONE} if use_ssl_flag else None
             self.ws = create_connection(url, timeout=timeout, sslopt=sslopt)
             self.is_connected = True
             self.logger.debug(f"WS connected {url}")
-        else:
-            raise ValueError(f"unsupported transport: {self.transport_type}")
 
     def disconnect(self):
         self.stop_receiving()
@@ -144,10 +154,27 @@ class MsyncClient:
         if self.transport_type == "tcp":
             header = struct.pack(">I", len(data))
             assert self.socket is not None
-            self.socket.sendall(header + data)
+            # 收包线程会动态调整 socket timeout；发送时临时放宽，避免误触发 send timed out。
+            prev_timeout = self.socket.gettimeout()
+            try:
+                if prev_timeout is not None and prev_timeout < 5.0:
+                    self.socket.settimeout(5.0)
+                self.socket.sendall(header + data)
+            finally:
+                self.socket.settimeout(prev_timeout)
         else:
             assert self.ws is not None
-            self.ws.send_binary(data)
+            # websocket recv 会设置较短超时，发送时临时放宽。
+            prev_timeout = None
+            try:
+                if hasattr(self.ws, "gettimeout"):
+                    prev_timeout = self.ws.gettimeout()
+                if hasattr(self.ws, "settimeout") and prev_timeout is not None and prev_timeout < 5.0:
+                    self.ws.settimeout(5.0)
+                self.ws.send_binary(data)
+            finally:
+                if prev_timeout is not None and hasattr(self.ws, "settimeout"):
+                    self.ws.settimeout(prev_timeout)
 
     def _recv_packet(self, timeout: Optional[float] = None) -> Optional[msync_pb2.MSync]:
         end = time.time() + (timeout or 0) if timeout else None
@@ -202,12 +229,17 @@ class MsyncClient:
         self._send_packet(ms)
 
     # --------------- auth ---------------
-    def _build_login_msg(self, username: str, token: str) -> msync_pb2.MSync:
+    def _build_login_msg(self, username: str, token: str, password: str = "") -> msync_pb2.MSync:
         provision = msync_pb2.Provision()
         provision.os_type = getattr(self.options, "os_type", 1)
         provision.version = getattr(self.options, "sdk_version", "python")
+        provision.network_type = msync_pb2.Provision.NETWORK_WIRE
+        provision.compress_type.append(msync_pb2.Provision.COMPRESS_NONE)
+        provision.encrypt_type.append(msync_pb2.ENCRYPT_NONE)
         provision.device_uuid = self.device_uuid
         provision.auth_token = ("{""token"": ""%s""}" % token).encode("utf-8")
+        provision.password = password or ""
+        provision.resource = self.client_resource
         provision.is_manual_login = True
 
         jid = jid_pb2.JID()
@@ -219,16 +251,17 @@ class MsyncClient:
         ms = msync_pb2.MSync()
         ms.version = msync_pb2.MSync.MSYNC_V1
         ms.command = msync_pb2.MSync.PROVISION
+        ms.encrypt_type.append(msync_pb2.ENCRYPT_NONE)
         ms.guid.CopyFrom(jid)
         ms.payload = provision.SerializeToString()
         return ms
 
-    def login(self, username: str, token: str, timeout: float = 10.0) -> bool:
+    def login(self, username: str, token: str, timeout: float = 10.0, password: str = "") -> bool:
         self.current_username = username
         self.last_login_error_code = None
         self.last_login_error_name = None
         self.last_login_reason = None
-        self._send_packet(self._build_login_msg(username, token))
+        self._send_packet(self._build_login_msg(username, token, password=password))
         deadline = time.time() + timeout
         while time.time() < deadline:
             msg = self._recv_packet(timeout=max(0.001, deadline - time.time()))
@@ -314,8 +347,263 @@ class MsyncClient:
         self._send_packet(ms)
         return msg_id
 
+    def _chatroom_jid(self, room_id: str) -> jid_pb2.JID:
+        rid = str(room_id or "").strip()
+        if not rid:
+            raise RuntimeError("room_id is empty")
+        if "@" in rid:
+            raise RuntimeError(f"room_id must not contain domain suffix: {rid}")
+        cached = self._chatroom_jid_cache.get(rid)
+        if cached is not None:
+            return cached
+        room = jid_pb2.JID()
+        room.app_key = self.appkey
+        room.name = rid
+        room.domain = "conference.easemob.com"
+        self._chatroom_jid_cache[rid] = room
+        return room
+
+    def _chat_from_jid(self) -> jid_pb2.JID:
+        """对齐参考实现：消息体 from 不带 client_resource。"""
+        if self._chat_from_jid_cache is not None:
+            return self._chat_from_jid_cache
+        j = jid_pb2.JID()
+        j.app_key = self.appkey
+        j.name = self.current_username
+        j.domain = "easemob.com"
+        self._chat_from_jid_cache = j
+        return j
+
+    def join_chatroom(self, room_id: str, timeout: float = 10.0, strict_response: bool = False) -> bool:
+        if not self.is_logged_in:
+            raise RuntimeError("not logged in")
+        if self._rx_thread and self._rx_thread.is_alive():
+            raise RuntimeError("join_chatroom must be called before start_receiving")
+
+        self.last_muc_error_code = None
+        self.last_muc_error_name = None
+        self.last_muc_reason = None
+
+        room_jid = self._chatroom_jid(room_id)
+        muc = mucbody_pb2.MUCBody()
+        muc.muc_id.CopyFrom(room_jid)
+        muc.operation = mucbody_pb2.MUCBody.Operation.JOIN
+        muc.is_chatroom = True
+        # 对齐参考实现：MUCBody.from 仅带 name。
+        muc_from = getattr(muc, "from")
+        muc_from.name = self.current_username
+
+        meta_id = int(time.time() * 1000)
+        meta = msync_pb2.Meta()
+        meta.id = meta_id
+        meta.timestamp = meta_id
+        meta.ns = msync_pb2.Meta.NameSpace.MUC
+        # 对齐参考实现：Meta.from 带 app_key/name/domain（不带 client_resource）。
+        meta_from = getattr(meta, "from")
+        meta_from.app_key = self.appkey
+        meta_from.name = self.current_username
+        meta_from.domain = "easemob.com"
+        # 对齐参考实现：Meta.to 仅设置 MUC 服务域名。
+        meta_to = getattr(meta, "to")
+        meta_to.domain = "conference.easemob.com"
+        meta.payload = muc.SerializeToString()
+
+        ul = msync_pb2.CommSyncUL()
+        ul.meta.CopyFrom(meta)
+
+        ms = msync_pb2.MSync()
+        ms.version = msync_pb2.MSync.MSYNC_V1
+        ms.command = msync_pb2.MSync.SYNC
+        ms.guid.CopyFrom(self._current_jid())
+        ms.payload = ul.SerializeToString()
+        self._send_packet(ms)
+
+        # 与 msync-auto-test 的实现保持一致：JOIN 默认异步发送即视为成功。
+        # 若调用方需要严格校验服务端状态，可传 strict_response=True。
+        if not strict_response:
+            self.last_muc_error_code = 0
+            self.last_muc_error_name = "OK_ASYNC"
+            self.last_muc_reason = "join request sent"
+            return True
+
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            packet = self._recv_packet(timeout=max(0.001, deadline - time.time()))
+            if packet is None:
+                continue
+            if packet.command != msync_pb2.MSync.SYNC:
+                continue
+            try:
+                dl = msync_pb2.CommSyncDL()
+                dl.ParseFromString(packet.payload)
+            except Exception:
+                continue
+
+            # 优先使用 meta_id 对应的状态作为 JOIN 结果。
+            if hasattr(dl, "meta_id") and dl.HasField("meta_id") and int(dl.meta_id) == meta_id:
+                code = 0
+                reason = ""
+                if hasattr(dl, "status") and dl.HasField("status"):
+                    code = int(getattr(dl.status, "error_code", 0))
+                    reason = str(getattr(dl.status, "reason", "") or "")
+                try:
+                    code_name = msync_pb2.Status.ErrorCode.Name(code)
+                except Exception:
+                    code_name = f"UNKNOWN_{code}"
+                self.last_muc_error_code = code
+                self.last_muc_error_name = code_name
+                self.last_muc_reason = reason
+                return code == 0
+
+        self.last_muc_error_code = -1
+        self.last_muc_error_name = "TIMEOUT"
+        self.last_muc_reason = f"no JOIN response within {timeout}s"
+        return False
+
+    def send_chatroom_message(self, room_id: str, content_text: str) -> int:
+        if not self.is_logged_in:
+            raise RuntimeError("not logged in")
+        msg_id = int(time.time() * 1000)
+
+        room_jid = self._chatroom_jid(room_id)
+
+        body = messagebody_pb2.MessageBody()
+        body.type = messagebody_pb2.MessageBody.Type.CHATROOM
+
+        j_from = self._chat_from_jid()
+        getattr(body, "from").CopyFrom(j_from)
+        body.to.CopyFrom(room_jid)
+
+        ct = body.contents.add()
+        ct.type = messagebody_pb2.MessageBody.Content.Type.TEXT
+        ct.text = content_text
+
+        meta = msync_pb2.Meta()
+        meta.id = msg_id
+        meta.timestamp = msg_id
+        meta.ns = msync_pb2.Meta.NameSpace.CHAT
+        getattr(meta, "from").CopyFrom(j_from)
+        meta.to.CopyFrom(room_jid)
+        meta.payload = body.SerializeToString()
+
+        ul = msync_pb2.CommSyncUL()
+        ul.meta.CopyFrom(meta)
+
+        ms = msync_pb2.MSync()
+        ms.version = msync_pb2.MSync.MSYNC_V1
+        ms.command = msync_pb2.MSync.SYNC
+        ms.guid.CopyFrom(self._current_jid())
+        ms.payload = ul.SerializeToString()
+
+        self._pending[msg_id] = time.time() * 1000.0
+        self._send_packet(ms)
+        return msg_id
+
+    def send_chatroom_custom_message(
+        self,
+        room_id: str,
+        custom_event: str,
+        custom_exts: dict[str, str] | None = None,
+    ) -> int:
+        """发送聊天室自定义消息（CHATROOM + Content.CUSTOM）。"""
+        if not self.is_logged_in:
+            raise RuntimeError("not logged in")
+        msg_id = int(time.time() * 1000)
+
+        room_jid = self._chatroom_jid(room_id)
+        body = messagebody_pb2.MessageBody()
+        body.type = messagebody_pb2.MessageBody.Type.CHATROOM
+
+        j_from = self._chat_from_jid()
+        getattr(body, "from").CopyFrom(j_from)
+        body.to.CopyFrom(room_jid)
+
+        ct = body.contents.add()
+        ct.type = messagebody_pb2.MessageBody.Content.Type.CUSTOM
+        ct.customEvent = str(custom_event or "")
+
+        if custom_exts:
+            for k, v in custom_exts.items():
+                kv = keyvalue_pb2.KeyValue()
+                kv.key = str(k)
+                kv.type = keyvalue_pb2.KeyValue.ValueType.STRING
+                kv.string_value = str(v)
+                ct.customExts.append(kv)
+
+        meta = msync_pb2.Meta()
+        meta.id = msg_id
+        meta.timestamp = msg_id
+        meta.ns = msync_pb2.Meta.NameSpace.CHAT
+        getattr(meta, "from").CopyFrom(j_from)
+        meta.to.CopyFrom(room_jid)
+        meta.payload = body.SerializeToString()
+
+        ul = msync_pb2.CommSyncUL()
+        ul.meta.CopyFrom(meta)
+
+        ms = msync_pb2.MSync()
+        ms.version = msync_pb2.MSync.MSYNC_V1
+        ms.command = msync_pb2.MSync.SYNC
+        ms.guid.CopyFrom(self._current_jid())
+        ms.payload = ul.SerializeToString()
+
+        self._pending[msg_id] = time.time() * 1000.0
+        self._send_packet(ms)
+        return msg_id
+
+    def send_chatroom_custom_data_message(
+        self,
+        room_id: str,
+        *,
+        custom_event: str,
+        custom_data: str,
+    ) -> int:
+        """聊天室自定义消息快速路径：仅发送 customExts.data。"""
+        if not self.is_logged_in:
+            raise RuntimeError("not logged in")
+        msg_id = int(time.time() * 1000)
+
+        room_jid = self._chatroom_jid(room_id)
+        j_from = self._chat_from_jid()
+
+        body = messagebody_pb2.MessageBody()
+        body.type = messagebody_pb2.MessageBody.Type.CHATROOM
+        getattr(body, "from").CopyFrom(j_from)
+        body.to.CopyFrom(room_jid)
+
+        ct = body.contents.add()
+        ct.type = messagebody_pb2.MessageBody.Content.Type.CUSTOM
+        ct.customEvent = str(custom_event or "")
+
+        kv = keyvalue_pb2.KeyValue()
+        kv.key = "data"
+        kv.type = keyvalue_pb2.KeyValue.ValueType.STRING
+        kv.string_value = str(custom_data)
+        ct.customExts.append(kv)
+
+        meta = msync_pb2.Meta()
+        meta.id = msg_id
+        meta.timestamp = msg_id
+        meta.ns = msync_pb2.Meta.NameSpace.CHAT
+        getattr(meta, "from").CopyFrom(j_from)
+        meta.to.CopyFrom(room_jid)
+        meta.payload = body.SerializeToString()
+
+        ul = msync_pb2.CommSyncUL()
+        ul.meta.CopyFrom(meta)
+
+        ms = msync_pb2.MSync()
+        ms.version = msync_pb2.MSync.MSYNC_V1
+        ms.command = msync_pb2.MSync.SYNC
+        ms.guid.CopyFrom(self._current_jid())
+        ms.payload = ul.SerializeToString()
+
+        self._pending[msg_id] = time.time() * 1000.0
+        self._send_packet(ms)
+        return msg_id
+
     # --------------- receive loop ---------------
-    def start_receiving(self, on_packet: Callable[[msync_pb2.MSync], None]):
+    def start_receiving(self, on_packet: Callable[[msync_pb2.MSync], None], emit_metrics: bool = True):
         """Start background loop and invoke callback for each parsed MSync packet."""
         if self._rx_thread and self._rx_thread.is_alive():
             return
@@ -330,8 +618,8 @@ class MsyncClient:
                 try:
                     if self._on_packet:
                         self._on_packet(msg)
-                    # built-in parsing for metrics
-                    self._parse_and_emit(msg)
+                    if emit_metrics:
+                        self._parse_and_emit(msg)
                 except Exception:
                     pass
                 if msg.command == msync_pb2.MSync.NOTICE:

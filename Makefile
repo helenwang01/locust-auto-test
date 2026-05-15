@@ -2,7 +2,7 @@ PY ?= python3
 
 .PHONY: help
 help:
-	@echo "Targets: deps, run-ws, run-tcp, run-speech"
+	@echo "Targets: deps, run-ws, run-tcp, run-speech, docs-check"
 
 .PHONY: deps
 deps:
@@ -19,3 +19,7 @@ run-tcp:
 .PHONY: run-speech
 run-speech:
 	bash scripts/run_speech_pressure.sh 20 5 5m
+
+.PHONY: docs-check
+docs-check:
+	$(PY) scripts/check_doc_links.py docs agents skills

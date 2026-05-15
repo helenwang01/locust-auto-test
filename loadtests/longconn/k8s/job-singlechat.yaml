@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: locust-singlechat
+  namespace: default
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: locust-singlechat
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: locust
+          image: locust-auto-test-singlechat:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --headless
+            - -u
+            - "20"
+            - -r
+            - "1"
+            - -t
+            - 7m
+            - --csv
+            - /tmp/out/singlechat_online
+          volumeMounts:
+            - name: config-env
+              mountPath: /app/config/.env
+              subPath: .env
+              readOnly: true
+      volumes:
+        - name: config-env
+          secret:
+            secretName: locust-config-env

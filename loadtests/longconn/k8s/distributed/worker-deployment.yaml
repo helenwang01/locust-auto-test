@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-worker
+  namespace: locust
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: locust-worker
+  template:
+    metadata:
+      labels:
+        app: locust-worker
+    spec:
+      containers:
+        - name: worker
+          image: locust-auto-test-singlechat:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --worker
+            - --master-host
+            - locust-master
+          volumeMounts:
+            - name: config-env
+              mountPath: /app/config/.env
+              subPath: .env
+              readOnly: true
+            - name: config-yaml
+              mountPath: /app/config/config.yaml
+              subPath: config.yaml
+              readOnly: true
+      volumes:
+        - name: config-env
+          secret:
+            secretName: locust-config-env
+        - name: config-yaml
+          configMap:
+            name: locust-config-yaml

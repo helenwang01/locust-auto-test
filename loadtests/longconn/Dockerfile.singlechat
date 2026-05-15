@@ -1,0 +1,23 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# 仅复制单聊脚本运行所需目录，避免把无关文件与敏感信息打入镜像
+COPY apis /app/apis
+COPY config/config.yaml /app/config/config.yaml
+COPY loadtests /app/loadtests
+COPY pb /app/pb
+COPY utils /app/utils
+
+# 预留敏感配置挂载位；生产建议用 Secret 挂载覆盖该文件
+RUN touch /app/config/.env
+
+ENTRYPOINT ["locust", "-f", "loadtests/longconn/locustfile_singlechat_online.py"]
+CMD ["--help"]

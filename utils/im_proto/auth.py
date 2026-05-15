@@ -6,8 +6,6 @@ from typing import Optional, Dict, Any
 
 import requests
 
-from .config import Config
-
 log = logging.getLogger(__name__)
 
 
@@ -28,7 +26,7 @@ def _load_api_spec_from_dir(api_dir: Path, name: str = "token") -> Optional[Dict
     return None
 
 
-def _default_api_dir(cfg: Optional[Config] = None) -> Path:
+def _default_api_dir(cfg: Optional[object] = None) -> Path:
     # precedence: cfg.run.api_dir -> cwd/apis -> repo_root/apis
     if cfg is not None and cfg.run.api_dir:
         return Path(cfg.run.api_dir)
@@ -39,7 +37,7 @@ def _default_api_dir(cfg: Optional[Config] = None) -> Path:
     return here
 
 
-def get_token_via_rest(cfg: Config, username: str, secret: str) -> str:
+def get_token_via_rest(cfg: object, username: str, secret: str) -> str:
     """Get token via HTTP (requests).
     Priority order:
       1) cfg.run.token_url（YAML ``run.token_url``）
@@ -56,7 +54,7 @@ def get_token_via_rest(cfg: Config, username: str, secret: str) -> str:
     return _http_get_token(username, secret, url=url)
 
 
-def perform_login_payload(cfg: Config, username: str, token: Optional[str]):
+def perform_login_payload(cfg: object, username: str, token: Optional[str]):
     """
     Build protobuf payload dict for login message.
     NOTE: This depends on the login message fields used by Easemob PB; please

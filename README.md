@@ -14,7 +14,9 @@
 1. 配置
 - 编辑 `config/config.yaml` 与 `config/.env`（YAML）
 - 统一通过 `active_env` 选择环境
-- `rest` 与 `locust` 必须是按环境分组结构
+- `rest` 按环境分组
+- `locust` 为“环境连接参数”结构
+- 造数据变量统一在 `data_seed`
 
 2. HTTP 单接口压测（语音转写）
 ```bash

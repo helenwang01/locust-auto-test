@@ -21,21 +21,22 @@ for p in (root, root / "src"):
 
 from apis.token_api import get_token as http_get_token
 from loadtests.common.config_center import LoadtestConfigCenter
+from loadtests.common.locust_runtime import require_cli_num_users
 from utils.msync_client import MsyncClient
+
+
+_CENTER = LoadtestConfigCenter.get()
 
 
 @dataclass(frozen=True)
 class OnlineTimelineConfig:
-    total_users: int
     offline_at_s: int
     offline_count: int
     online1_at_s: int
     online1_count: int
     online2_at_s: int
     online2_count: int
-    duration_s: int
     message_interval_s: float
-    spawn_rate: int
     user_prefix: str
     pad: int
     password: str
@@ -54,18 +55,15 @@ class OnlineTimelineConfig:
 
 
 def _load_scenario() -> OnlineTimelineConfig:
-    lc = LoadtestConfigCenter.get().longconn()
+    lc = _CENTER.longconn()
     return OnlineTimelineConfig(
-        total_users=lc.total_users,
         offline_at_s=lc.offline_at_s,
         offline_count=lc.offline_count,
         online1_at_s=lc.online1_at_s,
         online1_count=lc.online1_count,
         online2_at_s=lc.online2_at_s,
         online2_count=lc.online2_count,
-        duration_s=lc.duration_s,
         message_interval_s=lc.message_interval_s,
-        spawn_rate=lc.spawn_rate,
         user_prefix=lc.user_prefix,
         pad=lc.pad,
         password=lc.password,
@@ -110,18 +108,18 @@ def _fmt_user(prefix: str, idx: int, pad: int) -> str:
     return f"{prefix}{idx}"
 
 
-def active_online_count(elapsed_s: float, cfg: OnlineTimelineConfig) -> int:
+def active_online_count(elapsed_s: float, cfg: OnlineTimelineConfig, ring_total: int) -> int:
     if elapsed_s < cfg.offline_at_s:
-        return cfg.total_users
+        return ring_total
     if elapsed_s < cfg.online1_at_s:
-        return cfg.total_users - cfg.offline_count
+        return ring_total - cfg.offline_count
     if elapsed_s < cfg.online2_at_s:
-        return cfg.total_users - cfg.offline_count + cfg.online1_count
-    return cfg.total_users
+        return ring_total - cfg.offline_count + cfg.online1_count
+    return ring_total
 
 
-def is_user_online_at(user_idx: int, elapsed_s: float, cfg: OnlineTimelineConfig) -> bool:
-    return 1 <= user_idx <= active_online_count(elapsed_s, cfg)
+def is_user_online_at(user_idx: int, elapsed_s: float, cfg: OnlineTimelineConfig, ring_total: int) -> bool:
+    return 1 <= user_idx <= active_online_count(elapsed_s, cfg, ring_total)
 
 
 def should_emit_online_users_metric(user_idx: int) -> bool:
@@ -132,28 +130,6 @@ def online_users_metric_value(elapsed_s: float, cfg: OnlineTimelineConfig) -> fl
     del elapsed_s, cfg
     with _ONLINE_USERS_LOCK:
         return float(len(_ONLINE_USERS))
-
-
-def _resolve_expected_login_users(environment) -> int:
-    # 优先取本次压测实际目标用户数（UI/CLI 传入），再回退配置值
-    target = None
-    parsed = getattr(environment, "parsed_options", None)
-    if parsed is not None:
-        for k in ("users", "user_count"):
-            v = getattr(parsed, k, None)
-            if isinstance(v, (int, float)) and int(v) > 0:
-                target = int(v)
-                break
-    if target is None:
-        runner = getattr(environment, "runner", None)
-        for k in ("target_user_count", "user_count"):
-            v = getattr(runner, k, None) if runner is not None else None
-            if isinstance(v, (int, float)) and int(v) > 0:
-                target = int(v)
-                break
-    if target is None:
-        target = SCENARIO.total_users
-    return max(1, int(target))
 
 
 def _client_options(cfg: OnlineTimelineConfig) -> dict[str, object]:
@@ -171,11 +147,10 @@ def _client_options(cfg: OnlineTimelineConfig) -> dict[str, object]:
 
 
 def _connect_kwargs(cfg: OnlineTimelineConfig) -> dict[str, object]:
-    transport = "websocket" if cfg.mode in ("ws", "wss", "websocket") else "tcp"
     return {
         "ip": cfg.host,
         "port": cfg.port,
-        "transport": transport,
+        "transport": cfg.mode,
         "use_ssl": bool(cfg.use_ssl),
     }
 
@@ -193,11 +168,8 @@ def _on_test_start(environment, **kwargs):
     _TEST_START_MONO = time.monotonic()
     _ALL_LOGGED_IN_READY = False
     _LAST_LOGIN_PROGRESS = -1
-    _EXPECTED_LOGIN_USERS = _resolve_expected_login_users(environment)
-    print(
-        f"[login-ready] expected_users={_EXPECTED_LOGIN_USERS}, "
-        f"scenario_total={SCENARIO.total_users}"
-    )
+    _EXPECTED_LOGIN_USERS = require_cli_num_users(environment)
+    print(f"[login-ready] expected_users={_EXPECTED_LOGIN_USERS} (locust -u)")
     with _ONLINE_USERS_LOCK:
         _ONLINE_USERS.clear()
     with _LOGIN_LOCK:
@@ -217,8 +189,9 @@ class OnlineSingleChatUser(User):
     def __init__(self, environment):
         super().__init__(environment)
         raw_idx = next(_USER_COUNTER)
-        self.user_idx = ((raw_idx - 1) % SCENARIO.total_users) + 1
-        next_idx = (self.user_idx % SCENARIO.total_users) + 1
+        self._ring_total = require_cli_num_users(environment)
+        self.user_idx = ((raw_idx - 1) % self._ring_total) + 1
+        next_idx = (self.user_idx % self._ring_total) + 1
         self.username = _fmt_user(SCENARIO.user_prefix, self.user_idx, SCENARIO.pad)
         self.peer = _fmt_user(SCENARIO.user_prefix, next_idx, SCENARIO.pad)
         self.secret = SCENARIO.password
@@ -342,7 +315,7 @@ class OnlineSingleChatUser(User):
         self.is_online = False
 
     def on_start(self):
-        if is_user_online_at(self.user_idx, elapsed_since_test_start_s(), SCENARIO):
+        if is_user_online_at(self.user_idx, elapsed_since_test_start_s(), SCENARIO, self._ring_total):
             try:
                 self._connect()
             except Exception as exc:
@@ -366,7 +339,7 @@ class OnlineSingleChatUser(User):
                     context={"online_users": int(online_users)},
                 )
 
-        should_be_online = is_user_online_at(self.user_idx, elapsed_s, SCENARIO)
+        should_be_online = is_user_online_at(self.user_idx, elapsed_s, SCENARIO, self._ring_total)
         if should_be_online and not self.is_online:
             try:
                 self._connect()

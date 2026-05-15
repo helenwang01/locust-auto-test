@@ -21,14 +21,16 @@ for p in (ROOT, ROOT / "src"):
 
 from apis.token_api import get_token as http_get_token
 from loadtests.common.config_center import LoadtestConfigCenter
+from loadtests.common.locust_runtime import require_cli_num_users
 from utils.msync_client import MsyncClient
+
+
+_CENTER = LoadtestConfigCenter.get()
 
 
 @dataclass(frozen=True)
 class TcpSingleChatConfig:
-    total_users: int
     message_interval_s: float
-    spawn_rate: int
     user_prefix: str
     pad: int
     password: str
@@ -54,11 +56,9 @@ class TcpConnectKwargs(TypedDict):
 
 
 def _load_scenario() -> TcpSingleChatConfig:
-    lc = LoadtestConfigCenter.get().longconn()
+    lc = _CENTER.longconn()
     return TcpSingleChatConfig(
-        total_users=lc.total_users,
         message_interval_s=lc.message_interval_s,
-        spawn_rate=lc.spawn_rate,
         user_prefix=lc.user_prefix,
         pad=lc.pad,
         password=lc.password,
@@ -134,7 +134,7 @@ def _connect_kwargs(cfg: TcpSingleChatConfig) -> TcpConnectKwargs:
     return {
         "ip": cfg.host,
         "port": cfg.port,
-        "transport": "tcp",
+        "transport": cfg.mode,
         "use_ssl": bool(cfg.use_ssl),
     }
 
@@ -145,8 +145,9 @@ class TcpSingleChatUser(User):
     def __init__(self, environment):
         super().__init__(environment)
         raw_idx = next(_USER_COUNTER)
-        self.user_idx = ((raw_idx - 1) % SCENARIO.total_users) + 1
-        next_idx = (self.user_idx % SCENARIO.total_users) + 1
+        self._ring_total = require_cli_num_users(environment)
+        self.user_idx = ((raw_idx - 1) % self._ring_total) + 1
+        next_idx = (self.user_idx % self._ring_total) + 1
         self.username = _fmt_user(SCENARIO.user_prefix, self.user_idx, SCENARIO.pad)
         self.peer = _fmt_user(SCENARIO.user_prefix, next_idx, SCENARIO.pad)
         self.secret = SCENARIO.password
@@ -223,10 +224,10 @@ class TcpSingleChatUser(User):
             token = self._ensure_token()
             if not token:
                 raise RuntimeError(f"failed to get token for {self.username}")
-            ok = client.login(self.username, token)
+            ok = client.login(self.username, token, password=self.secret)
             if not ok:
                 token = self._ensure_token(force_refresh=True)
-                ok = client.login(self.username, token)
+                ok = client.login(self.username, token, password=self.secret)
             if not ok:
                 raise RuntimeError(
                     f"login failed for {self.username}; "
@@ -281,7 +282,7 @@ class TcpSingleChatUser(User):
                     response_time=online_users,
                     context={
                         "online_users": int(online_users),
-                        "target_total_users": SCENARIO.total_users,
+                        "target_total_users": self._ring_total,
                     },
                 )
 

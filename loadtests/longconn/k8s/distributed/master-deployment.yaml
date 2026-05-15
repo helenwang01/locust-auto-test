@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-master
+  namespace: locust
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust-master
+  template:
+    metadata:
+      labels:
+        app: locust-master
+    spec:
+      containers:
+        - name: master
+          image: locust-auto-test-singlechat:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --master
+            - --host
+            - http://placeholder
+          ports:
+            - containerPort: 8089
+              name: web
+            - containerPort: 5557
+              name: p1
+            - containerPort: 5558
+              name: p2
+          volumeMounts:
+            - name: config-env
+              mountPath: /app/config/.env
+              subPath: .env
+              readOnly: true
+            - name: config-yaml
+              mountPath: /app/config/config.yaml
+              subPath: config.yaml
+              readOnly: true
+      volumes:
+        - name: config-env
+          secret:
+            secretName: locust-config-env
+        - name: config-yaml
+          configMap:
+            name: locust-config-yaml

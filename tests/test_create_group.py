@@ -11,16 +11,6 @@ from typing import Any, Dict, List, Optional
 import pytest
 import requests
 
-from apis.group_api import create_group
-from utils.config import load_yaml_config
-
-
-def _pick(d: Dict[str, Any], keys, default):
-    for k in keys:
-        if k in d and d[k] not in (None, ""):
-            return d[k]
-    return default
-
 
 def _extract_group_id(resp_json: Any) -> Optional[str]:
     if not isinstance(resp_json, dict):
@@ -45,21 +35,13 @@ def _extract_group_id(resp_json: Any) -> Optional[str]:
 
 @pytest.mark.create_group
 class TestCreateGroup:
-    def test_create_one_group_with_200_members(self):
-        cfg = load_yaml_config()
-        rest_sec: Dict[str, Any] = cfg.get("rest", {}) if isinstance(cfg, dict) else {}
-        loc: Dict[str, Any] = cfg.get("locust", {}) if isinstance(cfg, dict) else {}
-
-        missing = [k for k in ("rest_url", "org_name", "app_name", "authorization") if not rest_sec.get(k)]
-        if missing:
-            pytest.fail("config/.env 缺失字段: " + ", ".join(f"rest.{k}" for k in missing))
-
+    def test_create_one_group_with_200_members(self, data_seed_config, rest_client):
         owner = "yc1"
         members: List[str] = [f"yc{i}" for i in range(1, 201)]
         assert len(members) == 200
         assert owner in members
 
-        timeout = float(_pick(loc, ["user_timeout", "timeout"], 15))
+        timeout = data_seed_config.user_timeout_s
         title = f"测试test{int(time.time())}"
 
         payload: Dict[str, Any] = {
@@ -83,9 +65,7 @@ class TestCreateGroup:
         }
 
         try:
-            resp = create_group(payload, str(rest_sec["authorization"]), timeout=timeout)
-        except requests.HTTPError as e:
-            resp = e.response
+            resp = rest_client.post("/chatgroups", json=payload, timeout=timeout)
         except requests.RequestException as e:
             pytest.fail(f"Request error while creating group: {e}")
 
