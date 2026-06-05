@@ -1,6 +1,6 @@
 from __future__ import annotations
 import requests
-from typing import Optional, Dict
+from typing import Any, Optional, Dict
 
 from utils.config import rest_ctx
 
@@ -13,6 +13,7 @@ def get_token(
     ttl: int = 6000000,
     headers: Optional[Dict[str, str]] = None,
     timeout: float = 10.0,
+    session: Any = None,
 ) -> str:
     """
     获取用户登录 Token。
@@ -39,7 +40,10 @@ def get_token(
         "ttl": ttl,
     }
 
-    resp = requests.post(target, headers=hdrs, json=body, timeout=timeout)
+    if session is not None:
+        resp = session.post(target, headers=hdrs, json=body, timeout=timeout)
+    else:
+        resp = requests.post(target, headers=hdrs, json=body, timeout=timeout)
     resp.raise_for_status()
     data = resp.json()
     token = data.get("access_token")

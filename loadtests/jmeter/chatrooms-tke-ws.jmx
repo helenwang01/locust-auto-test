@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="聊天室单机压测 room_1..30 / yc1..yc6000">
+      <stringProp name="TestPlan.comments">登录 → 入房 → 屏障 → 每房前 sender_per_room 个用户发消息，全员收包。&#xd;
+用户均分 room_1..N（users_per_room/房）；发消息速率 room_msg_rps/房，由 sender 均分。</stringProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">easemob-demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">wang01</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="user_prefix" elementType="Argument">
+            <stringProp name="Argument.name">user_prefix</stringProp>
+            <stringProp name="Argument.value">yc</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="room_prefix" elementType="Argument">
+            <stringProp name="Argument.name">room_prefix</stringProp>
+            <stringProp name="Argument.value">room_</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="room_count" elementType="Argument">
+            <stringProp name="Argument.name">room_count</stringProp>
+            <stringProp name="Argument.value">30</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="users_per_room" elementType="Argument">
+            <stringProp name="Argument.name">users_per_room</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sender_per_room" elementType="Argument">
+            <stringProp name="Argument.name">sender_per_room</stringProp>
+            <stringProp name="Argument.value">2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="room_msg_rps" elementType="Argument">
+            <stringProp name="Argument.name">room_msg_rps</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="message_payload_kb" elementType="Argument">
+            <stringProp name="Argument.name">message_payload_kb</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="message_seed" elementType="Argument">
+            <stringProp name="Argument.name">message_seed</stringProp>
+            <stringProp name="Argument.value">chatroom-custom-payload</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="total_users" elementType="Argument">
+            <stringProp name="Argument.name">total_users</stringProp>
+            <stringProp name="Argument.value">30</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ramp_up_seconds" elementType="Argument">
+            <stringProp name="Argument.name">ramp_up_seconds</stringProp>
+            <stringProp name="Argument.value">60</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration_seconds" elementType="Argument">
+            <stringProp name="Argument.name">duration_seconds</stringProp>
+            <stringProp name="Argument.value">900</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout_ms" elementType="Argument">
+            <stringProp name="Argument.name">timeout_ms</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msync_host" elementType="Argument">
+            <stringProp name="Argument.name">msync_host</stringProp>
+            <stringProp name="Argument.value">msync-im-qa-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msync_port" elementType="Argument">
+            <stringProp name="Argument.name">msync_port</stringProp>
+            <stringProp name="Argument.value">6717</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msync_url" elementType="Argument">
+            <stringProp name="Argument.name">msync_url</stringProp>
+            <stringProp name="Argument.value">tcp://${msync_host}:${msync_port}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="chatroom-online-6000">
+        <stringProp name="ThreadGroup.num_threads">${total_users}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${ramp_up_seconds}</stringProp>
+        <stringProp name="ThreadGroup.duration">${duration_seconds}</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="分配用户与房间" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">false</stringProp>
+          <stringProp name="script">int userIdx = ctx.getThreadNum()
+int usersPerRoom = vars.get(&apos;users_per_room&apos;) as int
+int senderPerRoom = vars.get(&apos;sender_per_room&apos;) as int
+int roomCount = vars.get(&apos;room_count&apos;) as int
+String prefix = vars.get(&apos;user_prefix&apos;)
+String roomPrefix = vars.get(&apos;room_prefix&apos;)
+
+int roomSeq = ((userIdx - 1).intdiv(usersPerRoom)) + 1
+if (roomSeq &gt; roomCount) {
+    throw new IllegalStateException(&quot;userIdx=${userIdx} 超出 room_count=${roomCount}&quot;)
+}
+int roomPos = ((userIdx - 1) % usersPerRoom) + 1
+boolean isSender = roomPos &lt;= senderPerRoom
+
+vars.put(&apos;user_idx&apos;, String.valueOf(userIdx))
+vars.put(&apos;username&apos;, prefix + userIdx)
+vars.put(&apos;room_id&apos;, roomPrefix + roomSeq)
+vars.put(&apos;room_pos&apos;, String.valueOf(roomPos))
+vars.put(&apos;is_sender&apos;, isSender ? &apos;true&apos; : &apos;false&apos;)
+vars.put(&apos;msync_url&apos;, &quot;tcp://${vars.get(&apos;msync_host&apos;)}:${vars.get(&apos;msync_port&apos;)}&quot;)
+</stringProp>
+        </JSR223PreProcessor>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="仅一次-登录并入房"/>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="TCP登录" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">false</stringProp>
+            <stringProp name="script">import com.easemob.im.call.Call
+
+def appKey = vars.get(&apos;org_name&apos;) + &apos;#&apos; + vars.get(&apos;app_name&apos;)
+def url = vars.get(&apos;msync_url&apos;)
+def userIdx = ctx.getThreadNum()
+def username = vars.get(&apos;user_prefix&apos;) + userIdx
+def password = vars.get(&apos;password&apos;)
+long timeout = (vars.get(&apos;timeout_ms&apos;) ?: &apos;10000&apos;) as long
+vars.put(&apos;username&apos;, username)
+
+def call = Call.getInstance(appKey, url)
+def ret
+synchronized (call) {
+    def createRet = call.create(username, password)
+    if (createRet != &apos;success&apos;) {
+        log.warn(&quot;create:${username}:${createRet}&quot;)
+    }
+    ret = call.login(username, password, timeout)
+    if (ret != &apos;success&apos;) {
+        for (int i = 0; i &lt; 3; i++) {
+            call.create(username, password)
+            ret = call.login(username, password, timeout)
+            if (ret == &apos;success&apos;) break
+        }
+    }
+}
+if (ret != &apos;success&apos;) {
+  log.info(&quot;login:${username}:${ret} url=${url}&quot;)
+  SampleResult.setSuccessful(false)
+  SampleResult.setResponseMessage(ret)
+  SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+  SampleResult.setResponseData((&quot;login failed user=${username} ret=${ret} url=${url}&quot;).getBytes(&quot;UTF-8&quot;))
+} else {
+  SampleResult.setSuccessful(true)
+  SampleResult.setResponseMessage(&apos;success&apos;)
+  SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+  SampleResult.setResponseData((&quot;login success user=${username} url=${url}&quot;).getBytes(&quot;UTF-8&quot;))
+}
+</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="加入聊天室" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">false</stringProp>
+            <stringProp name="script">import com.easemob.im.call.Call
+
+def appKey = vars.get(&apos;org_name&apos;) + &apos;#&apos; + vars.get(&apos;app_name&apos;)
+def url = vars.get(&apos;msync_url&apos;)
+def username = vars.get(&apos;username&apos;) ?: (vars.get(&apos;user_prefix&apos;) + ctx.getThreadNum())
+def roomId = vars.get(&apos;room_id&apos;)
+long timeout = (vars.get(&apos;timeout_ms&apos;) ?: &apos;10000&apos;) as long
+
+def call = Call.getInstance(appKey, url)
+def ret
+synchronized (call) {
+    ret = call.joinChatRoom(username, roomId, timeout)
+}
+if (ret != &apos;success&apos;) {
+    synchronized (call) {
+        for (int i = 0; i &lt; 3; i++) {
+            ret = call.joinChatRoom(username, roomId, timeout)
+            if (ret == &apos;success&apos;) break
+        }
+    }
+}
+if (ret != &apos;success&apos;) {
+    SampleResult.setSuccessful(false)
+    SampleResult.setResponseMessage(ret)
+    SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+    SampleResult.setResponseData((&quot;join failed user=${username} room=${roomId} ret=${ret}&quot;).getBytes(&quot;UTF-8&quot;))
+} else {
+    SampleResult.setSuccessful(true)
+    SampleResult.setResponseMessage(&apos;success&apos;)
+    SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+    SampleResult.setResponseData((&quot;join success user=${username} room=${roomId}&quot;).getBytes(&quot;UTF-8&quot;))
+    log.info(&quot;join ok user=${username} room=${roomId}&quot;)
+}
+</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <SyncTimer guiclass="TestBeanGUI" testclass="SyncTimer" testname="全员登录入房屏障" enabled="false">
+            <intProp name="group">0</intProp>
+            <longProp name="timeoutInMs">600000</longProp>
+            <intProp name="groupSize">0</intProp>
+          </SyncTimer>
+          <hashTree/>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>true</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>true</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="房内发送者发消息">
+          <stringProp name="IfController.condition">${__groovy(&quot;true&quot;.equals(vars.get(&quot;is_sender&quot;)))}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="发聊天室自定义消息">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">false</stringProp>
+            <stringProp name="script">import com.easemob.im.call.Call
+import com.easemob.im.message.model.MessageBody
+
+def appKey = vars.get(&apos;org_name&apos;) + &apos;#&apos; + vars.get(&apos;app_name&apos;)
+def url = vars.get(&apos;msync_url&apos;)
+def from = vars.get(&apos;username&apos;) ?: (vars.get(&apos;user_prefix&apos;) + ctx.getThreadNum())
+def roomId = vars.get(&apos;room_id&apos;)
+
+
+def content = [text: &apos;ROOM_CHAT&apos;]
+
+def call = Call.getInstance(appKey, url)
+def ret
+ret = call.sendToChatRoom(from, roomId, content, MessageBody.Content.Type.TEXT, 1L)
+if (ret != &apos;success&apos;) {
+    log.warn(&quot;send failed from=${from} room=${roomId} ret=${ret}&quot;)
+    SampleResult.setSuccessful(false)
+    SampleResult.setResponseMessage(ret)
+    SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+    SampleResult.setResponseData((&quot;send failed from=${from} room=${roomId} ret=${ret}&quot;).getBytes(&quot;UTF-8&quot;))
+} else {
+    SampleResult.setSuccessful(true)
+    SampleResult.setResponseMessage(&apos;success&apos;)
+    SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+    SampleResult.setResponseData((&quot;send success from=${from} room=${roomId} seq=${seq}&quot;).getBytes(&quot;UTF-8&quot;))
+}
+</stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="每发送者速率" enabled="true">
+              <intProp name="calcMode">0</intProp>
+              <stringProp name="throughput">${__groovy((vars.get(&apos;room_msg_rps&apos;) as double / vars.get(&apos;sender_per_room&apos;) as double) * 60)}</stringProp>
+            </ConstantThroughputTimer>
+            <hashTree/>
+          </hashTree>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>true</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>true</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="收消息">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">false</stringProp>
+          <stringProp name="script">import com.easemob.im.call.Call
+
+def appKey = vars.get(&apos;org_name&apos;) + &apos;#&apos; + vars.get(&apos;app_name&apos;)
+def url = vars.get(&apos;msync_url&apos;)
+def from = vars.get(&apos;username&apos;) ?: (vars.get(&apos;user_prefix&apos;) + ctx.getThreadNum())
+long timeout = (vars.get(&apos;timeout_ms&apos;) ?: &apos;10000&apos;) as long
+
+def ret = Call.getInstance(appKey, url).receive(from, timeout)
+if (ret == &apos;not user&apos; || ret == &apos;disConnected&apos; || ret == &apos;error&apos;) {
+    def password = vars.get(&apos;password&apos;)
+    def call = Call.getInstance(appKey, url)
+    synchronized (call) {
+        call.create(from, password)
+        call.login(from, password, timeout)
+        ret = call.joinChatRoom(from, vars.get(&apos;room_id&apos;), timeout)
+    }
+    if (ret != &apos;success&apos; &amp;&amp; ret != &apos;empty&apos;) {
+        ret = call.receive(from, timeout)
+    }
+}
+SampleResult.setSuccessful(ret != &apos;error&apos; &amp;&amp; ret != &apos;not user&apos;)
+SampleResult.setResponseMessage(String.valueOf(ret))
+SampleResult.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT)
+SampleResult.setResponseData((&quot;receive user=${from} ret=${ret}&quot;).getBytes(&quot;UTF-8&quot;))
+</stringProp>
+        </JSR223Sampler>
+        <hashTree>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="收包间隔1秒" enabled="true">
+            <stringProp name="ConstantTimer.delay">1000</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>true</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>true</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

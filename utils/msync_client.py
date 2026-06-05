@@ -24,9 +24,11 @@ except Exception:
         raise
 
 try:
-    from websocket import create_connection
+    from websocket import WebSocketConnectionClosedException, WebSocketTimeoutException, create_connection
     HAS_WEBSOCKET = True
 except Exception:
+    WebSocketConnectionClosedException = ()  # type: ignore
+    WebSocketTimeoutException = ()  # type: ignore
     HAS_WEBSOCKET = False
 
 
@@ -67,11 +69,11 @@ class MsyncClient:
         self.on_delivery: Optional[Callable[[int, str, str, float], None]] = None
         # on_message_received(from_user: str, to_user: str, text: str, meta_id: int)
         self.on_message_received: Optional[Callable[[str, str, str, int], None]] = None
+        # on_disconnect(reason: str)
+        self.on_disconnect: Optional[Callable[[str], None]] = None
 
         # pending send tracking: meta_id -> t_send_ms
         self._pending: Dict[int, float] = {}
-        self._chatroom_jid_cache: Dict[str, jid_pb2.JID] = {}
-        self._chat_from_jid_cache: Optional[jid_pb2.JID] = None
 
         # last login diagnostics
         self.last_login_error_code: Optional[int] = None
@@ -184,10 +186,14 @@ class MsyncClient:
                 self.socket.settimeout((end - time.time()) if end else None)
                 hdr = self._read_exact(4)
                 if not hdr:
+                    self._mark_disconnected("tcp peer closed while reading frame header")
                     return None
                 length = struct.unpack(">I", hdr)[0]
                 payload = self._read_exact(length)
                 if len(payload) != length:
+                    self._mark_disconnected(
+                        f"tcp peer closed while reading frame payload: expected={length}, got={len(payload)}"
+                    )
                     return None
                 msg = msync_pb2.MSync()
                 msg.ParseFromString(payload)
@@ -198,11 +204,18 @@ class MsyncClient:
                     self.ws.settimeout(max(0.001, end - time.time()))
                 data = self.ws.recv()
                 if not data:
+                    self._mark_disconnected("websocket peer closed")
                     return None
                 msg = msync_pb2.MSync()
                 msg.ParseFromString(data)
                 return msg
-        except Exception:
+        except (socket.timeout, TimeoutError, WebSocketTimeoutException):
+            return None
+        except WebSocketConnectionClosedException as exc:
+            self._mark_disconnected(f"websocket closed: {exc}")
+            return None
+        except Exception as exc:
+            self._mark_disconnected(f"recv failed: {type(exc).__name__}: {exc}")
             return None
 
     def _read_exact(self, n: int) -> bytes:
@@ -353,25 +366,18 @@ class MsyncClient:
             raise RuntimeError("room_id is empty")
         if "@" in rid:
             raise RuntimeError(f"room_id must not contain domain suffix: {rid}")
-        cached = self._chatroom_jid_cache.get(rid)
-        if cached is not None:
-            return cached
         room = jid_pb2.JID()
         room.app_key = self.appkey
         room.name = rid
         room.domain = "conference.easemob.com"
-        self._chatroom_jid_cache[rid] = room
         return room
 
     def _chat_from_jid(self) -> jid_pb2.JID:
         """对齐参考实现：消息体 from 不带 client_resource。"""
-        if self._chat_from_jid_cache is not None:
-            return self._chat_from_jid_cache
         j = jid_pb2.JID()
         j.app_key = self.appkey
         j.name = self.current_username
         j.domain = "easemob.com"
-        self._chat_from_jid_cache = j
         return j
 
     def join_chatroom(self, room_id: str, timeout: float = 10.0, strict_response: bool = False) -> bool:
@@ -551,57 +557,6 @@ class MsyncClient:
         self._send_packet(ms)
         return msg_id
 
-    def send_chatroom_custom_data_message(
-        self,
-        room_id: str,
-        *,
-        custom_event: str,
-        custom_data: str,
-    ) -> int:
-        """聊天室自定义消息快速路径：仅发送 customExts.data。"""
-        if not self.is_logged_in:
-            raise RuntimeError("not logged in")
-        msg_id = int(time.time() * 1000)
-
-        room_jid = self._chatroom_jid(room_id)
-        j_from = self._chat_from_jid()
-
-        body = messagebody_pb2.MessageBody()
-        body.type = messagebody_pb2.MessageBody.Type.CHATROOM
-        getattr(body, "from").CopyFrom(j_from)
-        body.to.CopyFrom(room_jid)
-
-        ct = body.contents.add()
-        ct.type = messagebody_pb2.MessageBody.Content.Type.CUSTOM
-        ct.customEvent = str(custom_event or "")
-
-        kv = keyvalue_pb2.KeyValue()
-        kv.key = "data"
-        kv.type = keyvalue_pb2.KeyValue.ValueType.STRING
-        kv.string_value = str(custom_data)
-        ct.customExts.append(kv)
-
-        meta = msync_pb2.Meta()
-        meta.id = msg_id
-        meta.timestamp = msg_id
-        meta.ns = msync_pb2.Meta.NameSpace.CHAT
-        getattr(meta, "from").CopyFrom(j_from)
-        meta.to.CopyFrom(room_jid)
-        meta.payload = body.SerializeToString()
-
-        ul = msync_pb2.CommSyncUL()
-        ul.meta.CopyFrom(meta)
-
-        ms = msync_pb2.MSync()
-        ms.version = msync_pb2.MSync.MSYNC_V1
-        ms.command = msync_pb2.MSync.SYNC
-        ms.guid.CopyFrom(self._current_jid())
-        ms.payload = ul.SerializeToString()
-
-        self._pending[msg_id] = time.time() * 1000.0
-        self._send_packet(ms)
-        return msg_id
-
     # --------------- receive loop ---------------
     def start_receiving(self, on_packet: Callable[[msync_pb2.MSync], None], emit_metrics: bool = True):
         """Start background loop and invoke callback for each parsed MSync packet."""
@@ -614,6 +569,8 @@ class MsyncClient:
             while self._rx_running and self.is_connected:
                 msg = self._recv_packet(timeout=1.0)
                 if msg is None:
+                    if not self.is_connected:
+                        break
                     continue
                 try:
                     if self._on_packet:
@@ -645,6 +602,36 @@ class MsyncClient:
         if t and t.is_alive():
             t.join(timeout=1.0)
         self._rx_thread = None
+
+    def _mark_disconnected(self, reason: str):
+        if not self.is_connected and not self.is_logged_in:
+            return
+        self._rx_running = False
+        self.is_connected = False
+        self.is_logged_in = False
+        self.logger.warning("DISCONNECTED user=%s reason=%s", getattr(self, "current_username", ""), reason)
+
+        sock = self.socket
+        self.socket = None
+        if sock is not None:
+            try:
+                sock.close()
+            except Exception:
+                pass
+
+        ws = self.ws
+        self.ws = None
+        if ws is not None:
+            try:
+                ws.close()
+            except Exception:
+                pass
+
+        if self.on_disconnect:
+            try:
+                self.on_disconnect(reason)
+            except Exception:
+                pass
 
     # --------------- helpers ---------------
     def _current_jid(self) -> jid_pb2.JID:
@@ -737,3 +724,4 @@ class MsyncClient:
                 self._emit_delivery(int(m.id), from_user, to_user, ts)
             except Exception:
                 continue
+

@@ -15,6 +15,8 @@ from typing import Optional, TypedDict
 
 from gevent import sleep as gevent_sleep
 from locust import User, events, task
+from locust.contrib.fasthttp import FastHttpSession
+from locust.event import EventHook
 
 ROOT = Path(__file__).resolve().parents[2]
 for p in (ROOT, ROOT / "src"):
@@ -24,14 +26,19 @@ for p in (ROOT, ROOT / "src"):
 
 from apis.token_api import get_token as http_get_token
 from loadtests.common.config_center import LoadtestConfigCenter
-from loadtests.common.locust_runtime import require_cli_num_users
+from loadtests.common.locust_runtime import (
+    global_user_index_for_worker,
+    local_worker_count,
+    local_worker_index,
+    require_cli_num_users,
+)
 from utils.msync_client import MsyncClient
 
 
 @events.init_command_line_parser.add_listener
 def _(parser):
     parser.add_argument("--room-count", type=int, default=None, help="聊天室数量；不传则读取 locust.scenes 默认值")
-    parser.add_argument("--users-per-room", type=int, default=None, help="每个聊天室在线人数；不传则读取场景默认值")
+    parser.add_argument("--users-per-room", type=int, default=None, help="个聊天室在线人数；不传则读取场景默认值")
     parser.add_argument("--sender-per-room", type=int, default=None, help="每个聊天室发送者人数；不传则读取场景默认值")
     parser.add_argument("--room-msg-rps", type=float, default=None, help="每个聊天室目标发送速率（条/秒）；不传则读取场景默认值")
     parser.add_argument("--chatroom-message", type=str, default="", help="聊天室消息正文，空则使用 config 中默认")
@@ -103,8 +110,6 @@ _USER_COUNTER = count(1)
 _ONLINE_USERS: set[str] = set()
 _ONLINE_USERS_SNAPSHOT: tuple[str, ...] = ()
 _ONLINE_USERS_LOCK = threading.Lock()
-_JOINED_USERS: set[str] = set()
-_JOINED_USERS_LOCK = threading.Lock()
 _ONLINE_USERS_READY_REPORTED = False
 _ONLINE_USERS_READY_LOCK = threading.Lock()
 _CONNECT_RETRY_COOLDOWN_S = 1.0
@@ -248,7 +253,9 @@ class ChatroomOnlineUser(User):
 
     def wait_time(self) -> float:
         if getattr(self, "is_sender", False):
-            return 0.0
+            cfg = getattr(self, "cfg", None)
+            interval_s = getattr(cfg, "task_interval_s", 0.01)
+            return min(0.01, max(0.001, interval_s * 0.1))
         return 1.0
 
     def _pace_sender_before_send(self) -> None:
@@ -278,7 +285,14 @@ class ChatroomOnlineUser(User):
             )
 
         raw_idx = next(_USER_COUNTER)
-        self.user_idx = ((raw_idx - 1) % self._ring_total) + 1
+        self.worker_index = local_worker_index(environment)
+        self.worker_count = local_worker_count(environment)
+        self.user_idx = global_user_index_for_worker(
+            raw_idx,
+            ring_total=self._ring_total,
+            worker_index=self.worker_index,
+            worker_count=self.worker_count,
+        )
         self.username = _fmt_user(self.cfg.user_prefix, self.user_idx, self.cfg.pad)
         self.secret = self.cfg.password
 
@@ -299,6 +313,7 @@ class ChatroomOnlineUser(User):
         self._send_seq = 0
         self._target_send_rps_reported = False
         self._next_send_at_mono: Optional[float] = None
+        self._send_enabled_at_mono: Optional[float] = None
         self._custom_payload_template = ChatroomCustomPayloadTemplate.build(
             room_id=self.room_id,
             sender=self.username,
@@ -306,11 +321,19 @@ class ChatroomOnlineUser(User):
         )
 
     def _ensure_token(self) -> str:
+        if not hasattr(self, "_token_http_session"):
+            self._token_http_session = FastHttpSession(
+                base_url=None,
+                request_event=EventHook(),
+                user=None,
+                insecure=True,
+            )
         self.token = http_get_token(
             self.username,
             self.secret,
             url=self.cfg.token_url,
             headers=self.cfg.token_headers,
+            session=self._token_http_session,
         )
         return self.token
 
@@ -358,6 +381,27 @@ class ChatroomOnlineUser(User):
                 },
             )
 
+        def _on_disconnect(reason: str) -> None:
+            with _ONLINE_USERS_LOCK:
+                _ONLINE_USERS.discard(self.username)
+                _refresh_online_users_snapshot_locked()
+            self.is_online = False
+            self._send_enabled_at_mono = None
+            self._next_send_at_mono = None
+            self._enqueue_metric(
+                "disconnect",
+                context={
+                    "user": self.username,
+                    "room_id": self.room_id,
+                    "reason": reason,
+                    "user_idx": self.user_idx,
+                    "worker_index": self.worker_index,
+                    "worker_count": self.worker_count,
+                },
+            )
+
+        client.on_disconnect = _on_disconnect
+
         try:
             conn = _connect_kwargs(self.cfg)
             client.connect(
@@ -394,18 +438,24 @@ class ChatroomOnlineUser(User):
 
         self.client = client
         self.is_online = True
+        self._next_send_at_mono = None
+        if self.is_sender:
+            self._send_enabled_at_mono = time.monotonic() + random.uniform(3.0, 5.0)
+        else:
+            self._send_enabled_at_mono = None
+
         with _ONLINE_USERS_LOCK:
             _ONLINE_USERS.add(self.username)
             _refresh_online_users_snapshot_locked()
-        with _JOINED_USERS_LOCK:
-            _JOINED_USERS.add(self.username)
 
     def _disconnect(self):
         with _ONLINE_USERS_LOCK:
             _ONLINE_USERS.discard(self.username)
             _refresh_online_users_snapshot_locked()
-        with _JOINED_USERS_LOCK:
-            _JOINED_USERS.discard(self.username)
+
+        self._send_enabled_at_mono = None
+        self._next_send_at_mono = None
+
         if self.client is not None:
             self.client.disconnect()
         self.client = None
@@ -414,10 +464,6 @@ class ChatroomOnlineUser(User):
     def _can_retry_connect(self) -> bool:
         now = time.monotonic()
         return (now - self._last_connect_error_at_mono) >= self._connect_retry_cooldown_s
-
-    def _all_joined(self) -> bool:
-        with _JOINED_USERS_LOCK:
-            return len(_JOINED_USERS) >= self._ring_total
 
     def _report_online_users_metric(self) -> None:
         if self.user_idx != 1:
@@ -473,6 +519,18 @@ class ChatroomOnlineUser(User):
 
     def on_start(self):
         try:
+            if self.user_idx <= min(5, self._ring_total):
+                print(
+                    "[chatroom_online_user_mapping]",
+                    {
+                        "worker_index": self.worker_index,
+                        "worker_count": self.worker_count,
+                        "user_idx": self.user_idx,
+                        "username": self.username,
+                        "room_id": self.room_id,
+                        "is_sender": self.is_sender,
+                    },
+                )
             self._connect()
         except Exception as exc:
             self._fire_event("connect_error", exception=exc, context={"user": self.username, "room_id": self.room_id})
@@ -488,6 +546,7 @@ class ChatroomOnlineUser(User):
 
         if not self.is_online:
             if not self._can_retry_connect():
+                gevent_sleep(0.05)
                 return
             try:
                 self._connect()
@@ -495,26 +554,28 @@ class ChatroomOnlineUser(User):
             except Exception as exc:
                 self._last_connect_error_at_mono = time.monotonic()
                 self._fire_event("connect_error", exception=exc, context={"user": self.username, "room_id": self.room_id})
+                gevent_sleep(0.05)
                 return
 
         if self.client is None:
-            return
-
-        # 先保证所有用户都已完成登录+入房，再开始统一发消息。
-        if not self._all_joined():
+            gevent_sleep(0.05)
             return
 
         if not self.is_sender:
             self._flush_metric_queue()
             return
 
+        if self._send_enabled_at_mono is not None and time.monotonic() < self._send_enabled_at_mono:
+            gevent_sleep(0.05)
+            return
+
         try:
             self._pace_sender_before_send()
             custom_message = self._build_custom_message()
-            self.client.send_chatroom_custom_data_message(
+            self.client.send_chatroom_custom_message(
                 self.room_id,
                 custom_event="ROOM_CHAT",
-                custom_data=custom_message,
+                custom_exts={"data": custom_message},
             )
             self._report_room_send_count()
         except Exception as exc:
@@ -525,4 +586,5 @@ class ChatroomOnlineUser(User):
             )
             self._disconnect()
             return
+
         self._flush_metric_queue()

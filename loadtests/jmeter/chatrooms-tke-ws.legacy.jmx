@@ -1,0 +1,2715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-tke-sdb">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">easemob-demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">wang01</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">a1-qa-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">2000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">300000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">4</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">4300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">yc</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">shijian-jmeter-qa-master</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">msync-gateway.easemob-sandbox</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid1" elementType="Argument">
+            <stringProp name="Argument.name">roomid1</stringProp>
+            <stringProp name="Argument.value">309531348369409</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">sroom</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA65bGWIwzHRpiua1jJd5unXQ</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6POBDGXXRuPMSTS9wtYD270jb61s</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="delay" elementType="Argument">
+            <stringProp name="Argument.name">delay</stringProp>
+            <stringProp name="Argument.value">30</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="wordcount" elementType="Argument">
+            <stringProp name="Argument.name">wordcount</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps2" elementType="Argument">
+            <stringProp name="Argument.name">sendtps2</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msglength" elementType="Argument">
+            <stringProp name="Argument.name">msglength</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roommembers" elementType="Argument">
+            <stringProp name="Argument.name">roommembers</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="wsurl" elementType="Argument">
+            <stringProp name="Argument.name">wsurl</stringProp>
+            <stringProp name="Argument.value">msync-im-qa-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-ngi" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">easemob-demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">ngiload</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">172.16.16.96</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">306</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">20000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">4100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">zload</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">ngi-abtest-001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">172.16.16.99</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid" elementType="Argument">
+            <stringProp name="Argument.name">roomid</stringProp>
+            <stringProp name="Argument.value">313167184986113</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">qa</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA65bGWIwzHRpiua1jJd5unXQ</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6POBDGXXRuPMSTS9wtYD270jb61s</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="delay" elementType="Argument">
+            <stringProp name="Argument.name">delay</stringProp>
+            <stringProp name="Argument.value">30</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="wordcount" elementType="Argument">
+            <stringProp name="Argument.name">wordcount</stringProp>
+            <stringProp name="Argument.value">150</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps2" elementType="Argument">
+            <stringProp name="Argument.name">sendtps2</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roommembers" elementType="Argument">
+            <stringProp name="Argument.name">roommembers</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="wsurl" elementType="Argument">
+            <stringProp name="Argument.name">wsurl</stringProp>
+            <stringProp name="Argument.value">ws://172.16.16.99:4200/websocket</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-qa" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">easemob-demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">load</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">a1-qa-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">2000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">6717</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">dload</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">hsb-ucloud-beijing-benchmark-master1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">msync-im-qa-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid" elementType="Argument">
+            <stringProp name="Argument.name">roomid</stringProp>
+            <stringProp name="Argument.value">280918944186369</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">qa</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA6x_2qiFl0RqmgBGtLx4wbwA</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6pfD2RJkDqAhFfV-aD7PM5MFcQm8</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="delay" elementType="Argument">
+            <stringProp name="Argument.name">delay</stringProp>
+            <stringProp name="Argument.value">120</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msglength" elementType="Argument">
+            <stringProp name="Argument.name">msglength</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps2" elementType="Argument">
+            <stringProp name="Argument.name">sendtps2</stringProp>
+            <stringProp name="Argument.value">15</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-hsb2" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">easemob-demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">load</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">a1-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">4300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">aload</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">hsb-ucloud-beijing-benchmark-master1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host1" elementType="Argument">
+            <stringProp name="Argument.name">host1</stringProp>
+            <stringProp name="Argument.value">81.70.142.13</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid" elementType="Argument">
+            <stringProp name="Argument.name">roomid</stringProp>
+            <stringProp name="Argument.value">306736668934145</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">qa</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA6x_2qiFl0RqmgBGtLx4wbwA</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6pfD2RJkDqAhFfV-aD7PM5MFcQm8</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="delay" elementType="Argument">
+            <stringProp name="Argument.name">delay</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msglength1" elementType="Argument">
+            <stringProp name="Argument.name">msglength1</stringProp>
+            <stringProp name="Argument.value">380</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msglength2" elementType="Argument">
+            <stringProp name="Argument.name">msglength2</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps2" elementType="Argument">
+            <stringProp name="Argument.name">sendtps2</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">172.29.0.64</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-hsb" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">113230417254974</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">hxim</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">a1-hsb.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">2000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">4300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">cload</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">hsb-ucloud-beijing-benchmark-master1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">81.70.142.13</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid" elementType="Argument">
+            <stringProp name="Argument.name">roomid</stringProp>
+            <stringProp name="Argument.value">304354871541761</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">qa</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA6HUFz_VpaSzy3oX1ORaPU5w</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6kPL9wl8Kx9BCaKYkHf4-Dn5Zocw</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="delay" elementType="Argument">
+            <stringProp name="Argument.name">delay</stringProp>
+            <stringProp name="Argument.value">1200</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msglength" elementType="Argument">
+            <stringProp name="Argument.name">msglength</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps2" elementType="Argument">
+            <stringProp name="Argument.name">sendtps2</stringProp>
+            <stringProp name="Argument.value">15</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-ebs" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">easemob-demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">load</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">a1.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">900</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">443</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">loadtest</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">hsb-ucloud-beijing-benchmark-master1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">msync-im1.easemob.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid" elementType="Argument">
+            <stringProp name="Argument.name">roomid</stringProp>
+            <stringProp name="Argument.value">252460174213133</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">qa</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA6tzTiJ7RiSdy7RN9leZ6Irg</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6j0Ektege6eF_vkZFq_OfG4dJ-mY</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="delay" elementType="Argument">
+            <stringProp name="Argument.name">delay</stringProp>
+            <stringProp name="Argument.value">60</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="msglength" elementType="Argument">
+            <stringProp name="Argument.name">msglength</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="配置参数-load" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="org_name" elementType="Argument">
+            <stringProp name="Argument.name">org_name</stringProp>
+            <stringProp name="Argument.value">100220210028658</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="app_name" elementType="Argument">
+            <stringProp name="Argument.name">app_name</stringProp>
+            <stringProp name="Argument.value">benchmark</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host1" elementType="Argument">
+            <stringProp name="Argument.name">host1</stringProp>
+            <stringProp name="Argument.value">hsb-benchmark-msync2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port1" elementType="Argument">
+            <stringProp name="Argument.name">port1</stringProp>
+            <stringProp name="Argument.value">6717</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="timeout" elementType="Argument">
+            <stringProp name="Argument.name">timeout</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="thread" elementType="Argument">
+            <stringProp name="Argument.name">thread</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration" elementType="Argument">
+            <stringProp name="Argument.name">duration</stringProp>
+            <stringProp name="Argument.value">900</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendtps" elementType="Argument">
+            <stringProp name="Argument.name">sendtps</stringProp>
+            <stringProp name="Argument.value">1000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logintps" elementType="Argument">
+            <stringProp name="Argument.name">logintps</stringProp>
+            <stringProp name="Argument.value">50</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port2" elementType="Argument">
+            <stringProp name="Argument.name">port2</stringProp>
+            <stringProp name="Argument.value">8083</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename" elementType="Argument">
+            <stringProp name="Argument.name">prename</stringProp>
+            <stringProp name="Argument.value">load</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="joindelay" elementType="Argument">
+            <stringProp name="Argument.name">joindelay</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logouttps" elementType="Argument">
+            <stringProp name="Argument.name">logouttps</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost</stringProp>
+            <stringProp name="Argument.value">hsb-ucloud-beijing-benchmark-master1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverport" elementType="Argument">
+            <stringProp name="Argument.name">getserverport</stringProp>
+            <stringProp name="Argument.value">9191</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomnum" elementType="Argument">
+            <stringProp name="Argument.name">roomnum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="getserverhost1" elementType="Argument">
+            <stringProp name="Argument.name">getserverhost1</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">180.184.183.120</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendthread" elementType="Argument">
+            <stringProp name="Argument.name">sendthread</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="restport" elementType="Argument">
+            <stringProp name="Argument.name">restport</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="roomid" elementType="Argument">
+            <stringProp name="Argument.name">roomid</stringProp>
+            <stringProp name="Argument.value">252738705358849</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="token" elementType="Argument">
+            <stringProp name="Argument.name">token</stringProp>
+            <stringProp name="Argument.value">Bearer YWMtpA_RtDz8Ee-IaHtIEcEtTQAAAAAAAAAAAAAAAAAAAAFn5I6GLGxKZYz4_uZMDw_gAQMAAAGQkUTTugBPGgAdst46Jx0vUildn9I_UOvjFFM0gLw6FU_6GRk9AY35_g</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="prename2" elementType="Argument">
+            <stringProp name="Argument.name">prename2</stringProp>
+            <stringProp name="Argument.value">qa</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientid" elementType="Argument">
+            <stringProp name="Argument.name">clientid</stringProp>
+            <stringProp name="Argument.value">YXA6MWHffQEWT8-eoSFPzrtLXA</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="clientsecret" elementType="Argument">
+            <stringProp name="Argument.name">clientsecret</stringProp>
+            <stringProp name="Argument.value">YXA6TdjLa8y3qV6aTBZVsncIuQOxrxY</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="userid" elementType="Argument">
+            <stringProp name="Argument.name">userid</stringProp>
+            <stringProp name="Argument.value">load100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="groupid1" elementType="Argument">
+            <stringProp name="Argument.name">groupid1</stringProp>
+            <stringProp name="Argument.value">243500157304833</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host1" elementType="Argument">
+            <stringProp name="Argument.name">host1</stringProp>
+            <stringProp name="Argument.value">14.103.38.102</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="tps" elementType="Argument">
+            <stringProp name="Argument.name">tps</stringProp>
+            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost" elementType="Argument">
+            <stringProp name="Argument.name">resthost</stringProp>
+            <stringProp name="Argument.value">hsb-benchmark-nginx</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="resthost1" elementType="Argument">
+            <stringProp name="Argument.name">resthost1</stringProp>
+            <stringProp name="Argument.value">180.184.181.42</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setup getMachineNum" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="获取numid" enabled="true">
+          <stringProp name="HTTPSampler.domain">${getserverhost}</stringProp>
+          <stringProp name="HTTPSampler.port">${getserverport}</stringProp>
+          <stringProp name="HTTPSampler.path">/sts/READ?FILENAME=servers.txt</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">numid</stringProp>
+            <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default"></stringProp>
+            <stringProp name="RegexExtractor.match_number">1</stringProp>
+            <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+          </RegexExtractor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">
+${__setProperty(numid,${numid},)};
+log.info(&quot;numid:&quot;+${numid});</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getapptoken" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">/${org_name}/${app_name}/token</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;grant_type&quot;: &quot;client_credentials&quot;,&#xd;
+    &quot;client_id&quot;: &quot;${clientid}&quot;,&#xd;
+    &quot;client_secret&quot;: &quot;${clientsecret}&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">token</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.access_token</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">${__setProperty(token,${token},)};</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 PreProcessor" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">// 修正后的完整脚本
+import com.github.javafaker.Faker;
+import java.util.Locale;
+
+// 初始化中文Faker（兼容写法）
+Locale cnLocale = new Locale(&quot;zh&quot;, &quot;CN&quot;);
+Faker faker = new Faker(cnLocale);
+
+// 生成中文数据（测试）
+String name = faker.name().fullName(); // 中文姓名
+String phone = faker.phoneNumber().cellPhone(); // 中文手机号
+vars.put(&quot;name&quot;, name);
+vars.put(&quot;phone&quot;, phone);
+
+log.info(&quot;生成的中文姓名：&quot; + name);
+log.info(&quot;生成的手机号：&quot; + phone);</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">${__setProperty(numid,0,)};
+log.info(&quot;numid:&quot;+${numid});</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="editroom" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">/${org_name}/${app_name}/chatrooms/${roomid}</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">PUT</stringProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;maxusers&quot;:500000&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
+            <stringProp name="JSONPostProcessor.referenceNames">groupid</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.data.groupid</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">String s = &quot;&quot;;
+for(int i=${start};i&lt;(${members}+${start}-1);i++)
+{
+	s = s+&quot;\&quot;${prename}&quot;+i+&quot;\&quot;,&quot;;
+}
+log.info(&quot;s:&quot;+s);
+s = s+&quot;\&quot;${prename}&quot;+(${members}+${start}-1)+&quot;\&quot;&quot;;
+log.info(&quot;s:&quot;+s);
+vars.put(&quot;payload&quot;,s);
+</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">// 获取变量值
+def value = vars.get(&quot;groupid&quot;)
+def index = vars.get(&quot;index&quot;)
+// 指定文件路径（绝对路径或相对路径）
+def filePath = &quot;./groupid.txt&quot;
+
+// 写入文件（追加模式）
+new File(filePath).append(index+&apos;,&apos;+value + System.lineSeparator())</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="set-token" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${token}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="false">
+            <stringProp name="ConstantTimer.delay">5000</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getroom" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">/${org_name}/${app_name}/chatrooms/${roomid}</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;maxusers&quot;:500000&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
+            <stringProp name="JSONPostProcessor.referenceNames">groupid</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.data.groupid</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">String s = &quot;&quot;;
+for(int i=${start};i&lt;(${members}+${start}-1);i++)
+{
+	s = s+&quot;\&quot;${prename}&quot;+i+&quot;\&quot;,&quot;;
+}
+log.info(&quot;s:&quot;+s);
+s = s+&quot;\&quot;${prename}&quot;+(${members}+${start}-1)+&quot;\&quot;&quot;;
+log.info(&quot;s:&quot;+s);
+vars.put(&quot;payload&quot;,s);
+</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">// 获取变量值
+def value = vars.get(&quot;groupid&quot;)
+def index = vars.get(&quot;index&quot;)
+// 指定文件路径（绝对路径或相对路径）
+def filePath = &quot;./groupid.txt&quot;
+
+// 写入文件（追加模式）
+new File(filePath).append(index+&apos;,&apos;+value + System.lineSeparator())</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="set-token" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${token}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="false">
+            <stringProp name="ConstantTimer.delay">5000</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="sendmessage" enabled="false">
+        <boolProp name="ThreadGroup.delayedStart">true</boolProp>
+        <stringProp name="ThreadGroup.num_threads">${__BeanShell(${thread}/${roommembers},)}</stringProp>
+        <intProp name="ThreadGroup.ramp_time">10</intProp>
+        <stringProp name="ThreadGroup.duration">${__BeanShell(${duration}-${delay},)}</stringProp>
+        <stringProp name="ThreadGroup.delay">${delay}</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="num" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="109446">num</stringProp>
+            <stringProp name="3392874">num0</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="1557113000">
+              <stringProp name="-1987822610">${__P(numid,)}</stringProp>
+              <stringProp name="49">1</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller" enabled="false"/>
+        <hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="jp@gc - Set Variables Action" enabled="false">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="rest发消息" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">${org_name}/${app_name}/messages/chatrooms</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;to&quot;: [&#xd;
+        &quot;${roomid}&quot;&#xd;
+    ],&#xd;
+    &quot;type&quot;: &quot;txt&quot;,&#xd;
+    &quot;body&quot;: {&#xd;
+        &#xd;
+        &quot;msg&quot;: &quot;${__RandomString(${msglength},abcdefghijklmnopqrst,)}&quot;&#xd;
+    },&#xd;
+    &quot;from&quot;: &quot;${prename}${__Random(1,9,)}&quot;,&#xd;
+     &quot;ext&quot;:{&#xd;
+    		&quot;send-timestamp&quot;:${__time(,)}&#xd;
+    	}&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer" enabled="true">
+            <intProp name="calcMode">2</intProp>
+            <stringProp name="throughput">${__BeanShell(${sendtps2}*60,)}</stringProp>
+          </ConstantThroughputTimer>
+          <hashTree/>
+        </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="false">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Accept</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">Bearer ${__P(token,)}</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Message-Source</stringProp>
+              <stringProp name="Header.value">kefu</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="false">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="premsg" elementType="Argument">
+              <stringProp name="Argument.name">premsg</stringProp>
+              <stringProp name="Argument.value">${__RandomString(${msglength1},abcdefghijklmnopqrst,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="发消息" enabled="true">
+          <stringProp name="BeanShellSampler.query">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.github.javafaker.Faker;
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__Random(${__BeanShell(1+${num}*${thread}+(${__threadNum}-1)*${roommembers},)},${__BeanShell(${num}*${thread}+${__threadNum}*${roommembers},)},)}&quot;;
+String time = &quot;${__time(,)}&quot;;
+String to = &quot;${prename2}-test1-${__BeanShell(${__threadNum}+${num}*${__BeanShell(${thread}/${roommembers},)},)}&quot;;
+Faker faker = new Faker(new Locale(&quot;zh-CN&quot;));
+String randomSentence = faker.lorem().sentence(${wordcount});
+Map content = new HashMap();
+content.put(&quot;text&quot;, randomSentence);
+
+
+String s = Call.getInstance(appKey, url).sendToChatRoom(from, to, content, MessageBody.Content.Type.TEXT, ${__Random(1,2,)});
+log.info(from+&quot;sendmsg to &quot;+to+&quot; &quot;+s);
+log.info(&quot;counter:&quot;+time);
+/*
+if(!s.equals(&quot;success&quot;)) {
+	IsSuccess = false;
+}
+*/
+</stringProp>
+        </BeanShellSampler>
+        <hashTree>
+          <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer" enabled="true">
+            <intProp name="calcMode">0</intProp>
+            <stringProp name="throughput">${__BeanShell(${sendtps}*60,)}</stringProp>
+          </ConstantThroughputTimer>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <kg.apc.jmeter.threads.SteppingThreadGroup guiclass="kg.apc.jmeter.threads.SteppingThreadGroupGui" testclass="kg.apc.jmeter.threads.SteppingThreadGroup" testname="sendmessage-step">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${__BeanShell(${thread}/${roommembers},)}</stringProp>
+        <stringProp name="Threads initial delay">${delay}</stringProp>
+        <stringProp name="Start users count">1</stringProp>
+        <stringProp name="Start users count burst">300</stringProp>
+        <stringProp name="Start users period">30</stringProp>
+        <stringProp name="Stop users count">10</stringProp>
+        <stringProp name="Stop users period">1</stringProp>
+        <stringProp name="flighttime">${duration}</stringProp>
+        <stringProp name="rampUp">1</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </kg.apc.jmeter.threads.SteppingThreadGroup>
+      <hashTree>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="num">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="109446">num</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-226867957">
+              <stringProp name="-1987822610">${__P(numid,)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller" enabled="false"/>
+        <hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="jp@gc - Set Variables Action" enabled="false">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="rest发消息" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">${org_name}/${app_name}/messages/chatrooms</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;to&quot;: [&#xd;
+        &quot;${roomid}&quot;&#xd;
+    ],&#xd;
+    &quot;type&quot;: &quot;txt&quot;,&#xd;
+    &quot;body&quot;: {&#xd;
+        &#xd;
+        &quot;msg&quot;: &quot;${__RandomString(${msglength},abcdefghijklmnopqrst,)}&quot;&#xd;
+    },&#xd;
+    &quot;from&quot;: &quot;${prename}${__Random(1,9,)}&quot;,&#xd;
+     &quot;ext&quot;:{&#xd;
+    		&quot;send-timestamp&quot;:${__time(,)}&#xd;
+    	}&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer" enabled="true">
+            <intProp name="calcMode">2</intProp>
+            <stringProp name="throughput">${__BeanShell(${sendtps2}*60,)}</stringProp>
+          </ConstantThroughputTimer>
+          <hashTree/>
+        </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="false">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Accept</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">Bearer ${__P(token,)}</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Message-Source</stringProp>
+              <stringProp name="Header.value">kefu</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="false">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="premsg" elementType="Argument">
+              <stringProp name="Argument.name">premsg</stringProp>
+              <stringProp name="Argument.value">${__RandomString(${msglength1},abcdefghijklmnopqrst,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="发消息">
+          <stringProp name="BeanShellSampler.query">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.github.javafaker.Faker;
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;${wsurl}&quot;;
+String from = &quot;${prename}${__Random(${__BeanShell(1+${num}*${thread}+(${__threadNum}-1)*${roommembers},)},${__BeanShell(${num}*${thread}+${__threadNum}*${roommembers},)},)}&quot;;
+String time = &quot;${__time(,)}&quot;;
+String to = &quot;${prename2}-test1-${__BeanShell(${__threadNum}+${num}*${__BeanShell(${thread}/${roommembers},)},)}&quot;;
+Faker faker = new Faker(new Locale(&quot;zh-CN&quot;));
+String randomSentence = faker.lorem().sentence(${wordcount});
+Map content = new HashMap();
+content.put(&quot;text&quot;, randomSentence);
+
+
+String s = Call.getWsInstance(appKey, url).sendToChatRoom(from, to, content, MessageBody.Content.Type.TEXT, ${__Random(1,2,)});
+log.debug(from+&quot;sendmsg to &quot;+to+&quot; &quot;+s);
+log.debug(&quot;counter:&quot;+time);
+/*
+if(!s.equals(&quot;success&quot;)) {
+	IsSuccess = false;
+}
+*/
+</stringProp>
+        </BeanShellSampler>
+        <hashTree>
+          <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer">
+            <intProp name="calcMode">0</intProp>
+            <stringProp name="throughput">${__BeanShell(${sendtps}*60,)}</stringProp>
+          </ConstantThroughputTimer>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${num} == 0,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${num} != 0,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="jp@gc - Set Variables Action" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler${__BeanShell(1+${num}*${thread},)}" enabled="false">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree/>
+      </hashTree>
+      <kg.apc.jmeter.threads.SteppingThreadGroup guiclass="kg.apc.jmeter.threads.SteppingThreadGroupGui" testclass="kg.apc.jmeter.threads.SteppingThreadGroup" testname="sendmessage-step" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <stringProp name="ThreadGroup.num_threads">30</stringProp>
+        <stringProp name="Threads initial delay">${delay}</stringProp>
+        <stringProp name="Start users count">1</stringProp>
+        <stringProp name="Start users count burst">1</stringProp>
+        <stringProp name="Start users period">120</stringProp>
+        <stringProp name="Stop users count">10</stringProp>
+        <stringProp name="Stop users period">1</stringProp>
+        <stringProp name="flighttime">${duration}</stringProp>
+        <stringProp name="rampUp">1</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </kg.apc.jmeter.threads.SteppingThreadGroup>
+      <hashTree/>
+      <kg.apc.jmeter.threads.SteppingThreadGroup guiclass="kg.apc.jmeter.threads.SteppingThreadGroupGui" testclass="kg.apc.jmeter.threads.SteppingThreadGroup" testname="login-step" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${thread}</stringProp>
+        <stringProp name="Threads initial delay">0</stringProp>
+        <stringProp name="Start users count">500</stringProp>
+        <stringProp name="Start users count burst">500</stringProp>
+        <stringProp name="Start users period">30</stringProp>
+        <stringProp name="Stop users count">10</stringProp>
+        <stringProp name="Stop users period">1</stringProp>
+        <stringProp name="flighttime">${duration}</stringProp>
+        <stringProp name="rampUp">200</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </kg.apc.jmeter.threads.SteppingThreadGroup>
+      <hashTree>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="num" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="109446">num</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-226867957">
+              <stringProp name="-1987822610">${__P(numid,)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="userid" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="-836029914">userid</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-1995475175">
+              <stringProp name="918362220">${__BeanShell(${__threadNum}+${num}*${thread},)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller" enabled="true"/>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="登录并加入聊天室" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="-1737025404">登录并加入聊天室</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${__threadNum}%100 == 1,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="发消息" enabled="false">
+            <stringProp name="BeanShellSampler.query">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+String time = &quot;${__time(,)},${__counter(FALSE,)}&quot;;
+String to = &quot;${roomid}&quot;;
+
+Map content = new HashMap();
+content.put(&quot;text&quot;, &quot;testText&quot;+time);
+
+String s = Call.getInstance(appKey, url).sendToChatRoom(from, to, content, MessageBody.Content.Type.TEXT, ${__Random(1,2,)});
+log.info(from+&quot;sendmsg to &quot;+to+&quot; &quot;+s);
+log.info(&quot;counter:&quot;+time);
+
+if(!s.equals(&quot;success&quot;)) {
+	IsSuccess = false;
+}
+
+</stringProp>
+          </BeanShellSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">80</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+log.info(from + &quot;receivemsg:&quot; + s2);
+vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${__threadNum}%100 != 1,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+//log.info(from + &quot;receivemsg:&quot; + s2);
+vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+          <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </kg.apc.jmeter.control.sampler.SetVariablesAction>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${userid}&quot;;
+String password = &quot;${password}&quot;;
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+log.info(from + &quot;receivemsg:&quot; + s2);
+if(s2.equals(&quot;disConnected&quot;) || s2.equals(&quot;not user&quot;) || s2.equals(&quot;error&quot;) ){
+	Thread.sleep(5000);
+	//String s1 = Call.getInstance(appKey, url).login(from, password, ${timeout});
+	//String s1 = Call.getInstance(appKey, url).joinChatRoom(from, &quot;${roomid}&quot;, ${timeout});
+}
+//vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+/*
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+*/
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <kg.apc.jmeter.threads.SteppingThreadGroup guiclass="kg.apc.jmeter.threads.SteppingThreadGroupGui" testclass="kg.apc.jmeter.threads.SteppingThreadGroup" testname="login-step" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <stringProp name="ThreadGroup.num_threads">3920</stringProp>
+        <stringProp name="Threads initial delay">0</stringProp>
+        <stringProp name="Start users count">500</stringProp>
+        <stringProp name="Start users count burst">500</stringProp>
+        <stringProp name="Start users period">40</stringProp>
+        <stringProp name="Stop users count">10</stringProp>
+        <stringProp name="Stop users period">1</stringProp>
+        <stringProp name="flighttime">${duration}</stringProp>
+        <stringProp name="rampUp">200</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </kg.apc.jmeter.threads.SteppingThreadGroup>
+      <hashTree>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="num" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="109446">num</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-226867957">
+              <stringProp name="-1987822610">${__P(numid,)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="userid" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="-836029914">userid</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-1995475175">
+              <stringProp name="918362220">${__BeanShell(${__threadNum}+${num}*${thread},)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller" enabled="true"/>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="登录并加入聊天室" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="-1737025404">登录并加入聊天室</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${__threadNum}%100 == 1,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="发消息" enabled="false">
+            <stringProp name="BeanShellSampler.query">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+String time = &quot;${__time(,)},${__counter(FALSE,)}&quot;;
+String to = &quot;${roomid}&quot;;
+
+Map content = new HashMap();
+content.put(&quot;text&quot;, &quot;testText&quot;+time);
+
+String s = Call.getInstance(appKey, url).sendToChatRoom(from, to, content, MessageBody.Content.Type.TEXT, ${__Random(1,2,)});
+log.info(from+&quot;sendmsg to &quot;+to+&quot; &quot;+s);
+log.info(&quot;counter:&quot;+time);
+
+if(!s.equals(&quot;success&quot;)) {
+	IsSuccess = false;
+}
+
+</stringProp>
+          </BeanShellSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">80</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+log.info(from + &quot;receivemsg:&quot; + s2);
+vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${__threadNum}%100 != 1,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+//log.info(from + &quot;receivemsg:&quot; + s2);
+vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+          <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </kg.apc.jmeter.control.sampler.SetVariablesAction>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${userid}&quot;;
+String password = &quot;${password}&quot;;
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+log.info(from + &quot;receivemsg:&quot; + s2);
+if(s2.equals(&quot;disConnected&quot;) || s2.equals(&quot;not user&quot;) || s2.equals(&quot;error&quot;) ){
+	Thread.sleep(5000);
+	//String s1 = Call.getInstance(appKey, url).login(from, password, ${timeout});
+	//String s1 = Call.getInstance(appKey, url).joinChatRoom(from, &quot;${roomid}&quot;, ${timeout});
+}
+//vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+/*
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+*/
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="recievemsg">
+        <boolProp name="ThreadGroup.delayedStart">true</boolProp>
+        <stringProp name="ThreadGroup.num_threads">${thread}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__BeanShell(${thread}/${logintps},)}</stringProp>
+        <stringProp name="ThreadGroup.duration">${__BeanShell(${duration}+${delay},)}</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="num" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="109446">num</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-226867957">
+              <stringProp name="-1987822610">${__P(numid,)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="userid" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="-836029914">userid</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-1995475175">
+              <stringProp name="918362220">${__BeanShell(${__threadNum}+${num}*${thread},)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller" enabled="true"/>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="登录并加入聊天室" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="-1737025404">登录并加入聊天室</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${__threadNum}%100 == 1,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="发消息" enabled="false">
+            <stringProp name="BeanShellSampler.query">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+String time = &quot;${__time(,)},${__counter(FALSE,)}&quot;;
+String to = &quot;${roomid}&quot;;
+
+Map content = new HashMap();
+content.put(&quot;text&quot;, &quot;testText&quot;+time);
+
+String s = Call.getInstance(appKey, url).sendToChatRoom(from, to, content, MessageBody.Content.Type.TEXT, ${__Random(1,2,)});
+log.info(from+&quot;sendmsg to &quot;+to+&quot; &quot;+s);
+log.info(&quot;counter:&quot;+time);
+
+if(!s.equals(&quot;success&quot;)) {
+	IsSuccess = false;
+}
+
+</stringProp>
+          </BeanShellSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">80</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+log.info(from + &quot;receivemsg:&quot; + s2);
+vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
+          <stringProp name="IfController.condition">${__groovy(${__threadNum}%100 != 1,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+            <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </kg.apc.jmeter.control.sampler.SetVariablesAction>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${__threadNum}&quot;;
+
+
+String s2 = Call.getInstance(appKey, url).receive(from, ${timeout});
+
+//log.info(from + &quot;receivemsg:&quot; + s2);
+vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <kg.apc.jmeter.control.sampler.SetVariablesAction guiclass="kg.apc.jmeter.control.sampler.SetVariablesActionGui" testclass="kg.apc.jmeter.control.sampler.SetVariablesAction" testname="收消息" enabled="true">
+          <elementProp name="SetVariablesAction" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </kg.apc.jmeter.control.sampler.SetVariablesAction>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="false">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">import java.util.HashMap;
+import java.util.Map;
+import com.easemob.im.call.Call;
+import com.easemob.im.message.model.MessageBody;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String from = &quot;${prename}${userid}&quot;;
+String password = &quot;${password}&quot;;
+
+String s2 = Call.getWsInstance(appKey, url).receive(from, ${timeout});
+
+log.info(from + &quot;receivemsg:&quot; + s2);
+if(s2.equals(&quot;disConnected&quot;) || s2.equals(&quot;not user&quot;) || s2.equals(&quot;error&quot;) ){
+	String s1 = Call.getWsInstance(appKey, url).login(from, password, ${timeout});
+	String s1 = Call.getWsInstance(appKey, url).joinChatRoom(from, &quot;${roomid}&quot;, ${timeout});
+}
+//vars.put(&quot;messagedelay&quot;,&quot;-1000&quot;);	
+/*
+if(!s2.equals(&quot;empty&quot;) &amp;&amp; (!s2.equals(&quot;error&quot;) &amp;&amp; !s2.equals(&quot;not user&quot;))){
+	vars.put(&quot;messagedelay&quot;,s2);
+}
+else if(s2.equals(&quot;error&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;400&quot;);
+}
+else if(s2.equals(&quot;not user&quot;)){
+	vars.put(&quot;msgerror&quot;,&quot;500&quot;);
+}
+*/
+//if(!s2.equals(&quot;success&quot;)) {
+//	IsSuccess = false;
+//}</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+            <stringProp name="ConstantTimer.delay">30000</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="logout" enabled="true">
+        <stringProp name="ThreadGroup.num_threads">${thread}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__BeanShell(${thread}/${logouttps},)}</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </PostThreadGroup>
+      <hashTree>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="num" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="109446">num</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-226867957">
+              <stringProp name="-1987822610">${__P(numid,)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="userid" enabled="true">
+          <collectionProp name="UserParameters.names">
+            <stringProp name="-836029914">userid</stringProp>
+          </collectionProp>
+          <collectionProp name="UserParameters.thread_values">
+            <collectionProp name="-1995475175">
+              <stringProp name="918362220">${__BeanShell(${__threadNum}+${num}*${thread},)}</stringProp>
+            </collectionProp>
+          </collectionProp>
+          <boolProp name="UserParameters.per_iteration">false</boolProp>
+        </UserParameters>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="退出聊天室" enabled="false">
+          <stringProp name="BeanShellSampler.query">package com.easemob.im.call;
+
+import com.easemob.im.message.model.MessageBody;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String username = &quot;${prename}${userid}&quot;;
+
+
+
+String s1 = Call.getInstance(appKey, url).leaveChatRoom(username, &quot;${roomid}&quot;, ${timeout});
+log.info(&quot;leave room:&quot;+s1);
+
+if(!s1.equals(&quot;success&quot;)){
+	IsSuccess = false;
+}</stringProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="退出" enabled="true">
+          <stringProp name="BeanShellSampler.query">package com.easemob.im.call;
+
+import com.easemob.im.message.model.MessageBody;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;tcp://${host}:${port1}&quot;;
+String username = &quot;${prename}${userid}&quot;;
+
+
+String s1 = Call.getInstance(appKey, url).logout(username, ${timeout});
+
+if(!s1.equals(&quot;success&quot;)){
+	IsSuccess = false;
+}
+</stringProp>
+        </BeanShellSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>true</responseData>
+            <samplerData>true</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>true</responseData>
+            <samplerData>true</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>true</responseData>
+            <samplerData>true</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="登录并加入聊天室" enabled="true"/>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="退出聊天室" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">${org_name}/${app_name}/chatrooms/${roomid}/users/${prename}${__threadNum}</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__P(token,)}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Message-Source</stringProp>
+                <stringProp name="Header.value">kefu</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="登录" enabled="true">
+          <stringProp name="BeanShellSampler.query">package com.easemob.im.call;
+
+import com.easemob.im.message.model.MessageBody;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;${wsurl}&quot;;
+String username = &quot;${prename}${userid}&quot;;
+String password = &quot;${password}&quot;;
+String s = Call.getWsInstance(appKey, url).create(username, password,false);
+
+String s1 = Call.getWsInstance(appKey, url).login(username, password, ${timeout});
+if(!s1.equals(&quot;success&quot;)){
+	log.info(&quot;login:&quot;+s1);
+	IsSuccess = false;
+	ResponseCode = 500;
+	for(int i=0;i&lt;3;i++)
+	{
+		s1 = Call.getWsInstance(appKey, url).login(username, password, ${timeout});
+		//log.info(&quot;login:&quot;+username+&quot;:&quot;+password+&quot;:&quot;+s1);
+		if(s1.equals(&quot;success&quot;))
+		{
+			IsSuccess = true;
+			ResponseCode = 200;
+			break;	
+		}
+	}
+}
+</stringProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="加入聊天室" enabled="true">
+          <stringProp name="BeanShellSampler.query">package com.easemob.im.call;
+
+import com.easemob.im.message.model.MessageBody;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+String appKey = &quot;${org_name}#${app_name}&quot;;
+String url = &quot;${wsurl}&quot;;
+String username = &quot;${prename}${userid}&quot;;
+String roomid=&quot;${prename2}-test1-${__BeanShell((${__threadNum}-1)/${roommembers}+${num}*${thread}/${roommembers}+1,)}&quot;;
+
+String s1 = Call.getWsInstance(appKey, url).joinChatRoom(username, roomid, ${timeout});
+log.info(&quot;joinroom:&quot;+s1);
+if(!s1.equals(&quot;success&quot;)){
+	IsSuccess = false;
+	ResponseCode = 500;
+	for(int i=0;i&lt;3;i++)
+	{
+		s1 = Call.getWsInstance(appKey, url).joinChatRoom(username, roomid, ${timeout});
+		if(s1.equals(&quot;success&quot;))
+		{
+			IsSuccess = true;
+			ResponseCode = 200;
+			break;	
+		}
+	}
+}
+</stringProp>
+        </BeanShellSampler>
+        <hashTree>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+            <stringProp name="ConstantTimer.delay">10</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="加入聊天室" enabled="false">
+          <stringProp name="HTTPSampler.domain">${resthost}</stringProp>
+          <stringProp name="HTTPSampler.port">${restport}</stringProp>
+          <stringProp name="HTTPSampler.path">${org_name}/${app_name}/chatrooms/${roomid}/users/${prename}${__threadNum}</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${__P(token,)}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Message-Source</stringProp>
+                <stringProp name="Header.value">kefu</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.TransactionsPerSecondGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="jp@gc - Transactions per Second" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>true</responseData>
+            <samplerData>true</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+        <longProp name="interval_grouping">1000</longProp>
+        <boolProp name="graph_aggregated">false</boolProp>
+        <stringProp name="include_sample_labels"></stringProp>
+        <stringProp name="exclude_sample_labels"></stringProp>
+        <stringProp name="start_offset"></stringProp>
+        <stringProp name="end_offset"></stringProp>
+        <boolProp name="include_checkbox_state">false</boolProp>
+        <boolProp name="exclude_checkbox_state">false</boolProp>
+      </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

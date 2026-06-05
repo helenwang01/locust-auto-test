@@ -23,7 +23,12 @@ for p in (ROOT, ROOT / "src"):
 
 from apis.token_api import get_token as http_get_token
 from loadtests.common.config_center import LoadtestConfigCenter
-from loadtests.common.locust_runtime import require_cli_num_users
+from loadtests.common.locust_runtime import (
+    global_user_index_for_worker,
+    local_worker_count,
+    local_worker_index,
+    require_cli_num_users,
+)
 from utils.msync_client import MsyncClient
 from utils.rest_client import RestClient
 
@@ -276,7 +281,14 @@ class ChatroomRestOnlineUser(User):
             )
 
         raw_idx = next(_USER_COUNTER)
-        self.user_idx = ((raw_idx - 1) % self._ring_total) + 1
+        self.worker_index = local_worker_index(environment)
+        self.worker_count = local_worker_count(environment)
+        self.user_idx = global_user_index_for_worker(
+            raw_idx,
+            ring_total=self._ring_total,
+            worker_index=self.worker_index,
+            worker_count=self.worker_count,
+        )
         self.username = _fmt_user(self.cfg.user_prefix, self.user_idx, self.cfg.pad)
         self.secret = self.cfg.password
 

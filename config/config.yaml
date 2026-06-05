@@ -65,7 +65,7 @@ locust:
       peak_target_users: 1200000  # 峰值在线总目标（全房间汇总）
 
     - name: chatroom-online-small  # 默认聊天室摸高压测场景（可被 LOCUST_CHATROOM_SCENE 覆盖）
-      room_count: 1  # 聊天室数量默认值（可被 --room-count 覆盖）
+      room_count: 10  # 聊天室数量默认值（可被 --room-count 覆盖）
       users_per_room: 50  # 每房在线人数默认值（可被 --users-per-room 覆盖）
       sender_per_room: 1  # 每房发送者人数默认值（可被 --sender-per-room 覆盖）
       room_msg_rps: 10  # 每房发送速率默认值（条/秒，可被 --room-msg-rps 覆盖）
