@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-exporter
+  namespace: locust
+  labels:
+    app: locust-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust-exporter
+  template:
+    metadata:
+      labels:
+        app: locust-exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9646"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: exporter
+          image: containersol/locust_exporter:v0.5.0
+          ports:
+            - containerPort: 9646
+              name: metrics
+          env:
+            - name: LOCUST_EXPORTER_URI
+              value: "http://locust-master:8089"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

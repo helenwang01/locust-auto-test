@@ -68,6 +68,49 @@ kubectl --context ${KUBE_CONTEXT} apply -f ${ROOT}/loadtests/longconn/k8s/distri
 kubectl --context ${KUBE_CONTEXT} apply -f ${ROOT}/loadtests/longconn/k8s/distributed/worker-deployment.yaml
 ```
 
+## 7.1 部署 locust-exporter（Prometheus 打点）
+
+locust-exporter 从 Locust master 的 `/stats/requests` API 拉取数据，暴露为 Prometheus 标准 `/metrics` 端点（端口 9646）。
+
+```bash
+kubectl --context ${KUBE_CONTEXT} apply -f ${ROOT}/loadtests/longconn/k8s/distributed/locust-exporter-deployment.yaml
+kubectl --context ${KUBE_CONTEXT} apply -f ${ROOT}/loadtests/longconn/k8s/distributed/locust-exporter-service.yaml
+```
+
+验证 exporter 正常运行：
+
+```bash
+kubectl --context ${KUBE_CONTEXT} -n ${NS} get pods -l app=locust-exporter
+# 端口转发查看 metrics
+kubectl --context ${KUBE_CONTEXT} -n ${NS} port-forward svc/locust-exporter 9646:9646
+# 浏览器或 curl 访问 http://127.0.0.1:9646/metrics
+```
+
+### Prometheus 配置
+
+在 Prometheus 的 `scrape_configs` 中添加：
+
+```yaml
+scrape_configs:
+  - job_name: 'locust'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['locust-exporter.locust.svc.cluster.local:9646']
+```
+
+如果集群中已部署 Prometheus Operator 并启用了 Pod annotation 自动发现（`prometheus.io/scrape: "true"`），则无需额外配置，Prometheus 会自动抓取。
+
+### 暴露的主要指标
+
+| 指标名 | 类型 | 说明 |
+|--------|------|------|
+| `locust_requests_total` | Counter | 总请求数（按 name/method 分） |
+| `locust_failures_total` | Counter | 失败请求数 |
+| `locust_response_times` | Histogram | 响应时间分布 |
+| `locust_users` | Gauge | 当前在线虚拟用户数 |
+| `locust_requests_current_rps` | Gauge | 当前 RPS |
+| `locust_requests_current_fail_per_sec` | Gauge | 当前失败速率 |
+
 ## 8. 检查 Pod 启动
 
 ```bash
@@ -134,8 +177,8 @@ kubectl --context ${KUBE_CONTEXT} -n ${NS} delete pod -l app=locust-worker --gra
 ## 14. 清理
 
 ```bash
-kubectl --context ${KUBE_CONTEXT} -n ${NS} delete deploy locust-worker locust-master
-kubectl --context ${KUBE_CONTEXT} -n ${NS} delete svc locust-master
+kubectl --context ${KUBE_CONTEXT} -n ${NS} delete deploy locust-worker locust-master locust-exporter
+kubectl --context ${KUBE_CONTEXT} -n ${NS} delete svc locust-master locust-exporter
 kubectl --context ${KUBE_CONTEXT} -n ${NS} delete secret locust-config-env
 kubectl --context ${KUBE_CONTEXT} -n ${NS} delete configmap locust-config-yaml
 kubectl --context ${KUBE_CONTEXT} delete ns ${NS}

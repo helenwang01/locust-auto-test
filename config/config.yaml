@@ -1,4 +1,4 @@
-active_env: qa  # 当前激活环境名，对应下方 rest.<name> 与 locust.<name> 块
+active_env: tke  # 当前激活环境名，对应下方 rest.<name> 与 locust.<name> 块
 
 headers:
   accept: application/json  # 通用 Accept 请求头
