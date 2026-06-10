@@ -39,7 +39,7 @@ rest:
     users_path: /users  # 用户相关 REST 路径前缀
     app_key: easemob-demo#wang  # 应用密钥
   tke:
-    rest_url: http://tke-sdb-a1.easemob.com  # TKE REST 网关地址
+    rest_url: http://nginx.easemob-sandbox.svc.cluster.local  # TKE REST 网关地址
     org_name: 100260423254379  # 租户组织名（数字 org）
     app_name: wang  # 应用名
     users_path: /users  # 用户相关 REST 路径前缀
@@ -115,7 +115,7 @@ locust:
 
   tke:
     mode: tcp  # 长连接传输：tcp | websocket
-    host: tke-sdb-msync-im1.easemob.com  # MSync 接入域名或 IP
-    port: 6717  # MSync 端口
+    host: msync-gateway.easemob-sandbox  # MSync 接入域名或 IP
+    port: 4300  # MSync 端口
     path: /im  # websocket 模式下的路径
     use_ssl: false  # 是否 TLS
