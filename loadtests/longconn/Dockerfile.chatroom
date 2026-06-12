@@ -6,6 +6,38 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        coreutils \
+        curl \
+        dnsutils \
+        file \
+        findutils \
+        gawk \
+        gzip \
+        iproute2 \
+        iputils-ping \
+        jq \
+        less \
+        lsof \
+        nano \
+        net-tools \
+        netcat-openbsd \
+        procps \
+        sed \
+        rsync \
+        telnet \
+        tree \
+        traceroute \
+        unzip \
+        vim \
+        wget \
+        xz-utils \
+        zip \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
@@ -17,7 +49,10 @@ COPY pb /app/pb
 COPY utils /app/utils
 
 # 预留敏感配置挂载位；生产建议用 Secret 挂载覆盖该文件
-RUN touch /app/config/.env
+RUN mkdir -p /app/config \
+    && touch /app/config/.env \
+    && chmod 777 /app/config \
+    && chmod 666 /app/config/config.yaml /app/config/.env
 
 ENTRYPOINT ["locust", "-f", "loadtests/longconn/locustfile_chatroom_online.py"]
 CMD ["--help"]
